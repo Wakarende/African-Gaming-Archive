@@ -1,47 +1,205 @@
+import { Link } from "react-router-dom";
+import { ArrowDown } from "lucide-react";
 import Layout from "@/components/Layout";
 import StudioCard from "@/components/StudioCard";
+import AnimatedSection from "@/components/AnimatedSection";
+import Marquee from "@/components/Marquee";
 import { studios } from "@/data/studios";
 import heroImage from "@/assets/hero-image.jpg";
+import studio1 from "@/assets/studio-1.jpg";
+import studio2 from "@/assets/studio-2.jpg";
+import studio3 from "@/assets/studio-3.jpg";
 
 const Index = () => {
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="border-b border-border">
-        <div className="editorial-container py-16 md:py-24 lg:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="space-y-6">
-              <h1 className="editorial-headline">
-                Documenting the studios building Africa's interactive future
-              </h1>
-              <p className="editorial-body text-muted-foreground max-w-lg">
-                A visual archive of game development studios across East Africa, 
-                preserving the stories of creators shaping a new medium on the continent.
-              </p>
-            </div>
-            <div className="aspect-[4/3] overflow-hidden bg-muted">
-              <img
-                src={heroImage}
-                alt="East African game developers at work"
-                className="w-full h-full object-cover"
-              />
-            </div>
+      {/* Hero Section - Full viewport, immersive */}
+      <section className="relative min-h-screen flex flex-col justify-end bg-foreground overflow-hidden">
+        {/* Background image mosaic */}
+        <div className="absolute inset-0 grid grid-cols-3 gap-1 opacity-60">
+          <div className="relative overflow-hidden">
+            <img
+              src={heroImage}
+              alt=""
+              className="w-full h-full object-cover scale-110"
+            />
+          </div>
+          <div className="relative overflow-hidden hidden md:block">
+            <img
+              src={studio1}
+              alt=""
+              className="w-full h-full object-cover scale-110"
+            />
+          </div>
+          <div className="relative overflow-hidden hidden md:block">
+            <img
+              src={studio2}
+              alt=""
+              className="w-full h-full object-cover scale-110"
+            />
+          </div>
+        </div>
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/80 to-transparent" />
+
+        {/* Hero content */}
+        <div className="relative z-10 editorial-container pb-12 md:pb-20">
+          <div className="mb-16 md:mb-24">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-background/60 mb-8">
+              East African Game Development Archive
+            </p>
+            <h1 className="brutalist-headline text-background max-w-[14ch]">
+              Documenting the studios building Africa's interactive future
+            </h1>
+          </div>
+
+          {/* Scroll indicator */}
+          <div className="flex items-center gap-4">
+            <ArrowDown className="w-4 h-4 text-background/60 animate-bounce" />
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-background/60">
+              Scroll to explore
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Studio Grid */}
-      <section className="py-16 md:py-24">
+      {/* Stats / Numbers Section */}
+      <section className="py-16 md:py-24 border-b border-border">
         <div className="editorial-container">
-          <div className="mb-12">
-            <p className="editorial-caption mb-4">The Archive</p>
-            <h2 className="editorial-subhead">Featured Studios</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-            {studios.map((studio) => (
-              <StudioCard key={studio.id} studio={studio} />
-            ))}
-          </div>
+          <AnimatedSection animation="fade-up">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+              {[
+                { number: "04", label: "Studios Documented" },
+                { number: "03", label: "Countries" },
+                { number: "2018", label: "Earliest Founded" },
+                { number: "∞", label: "Stories to Tell" },
+              ].map((stat, index) => (
+                <div key={index} className="text-center md:text-left">
+                  <p className="font-serif text-5xl md:text-6xl lg:text-7xl leading-none mb-2">
+                    {stat.number}
+                  </p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Marquee Section - Inverted */}
+      <section className="section-inverted py-6 md:py-8 overflow-hidden">
+        <Marquee speed="slow">
+          {studios.map((studio) => (
+            <span
+              key={studio.id}
+              className="font-serif text-2xl md:text-3xl lg:text-4xl mx-8 md:mx-16"
+            >
+              {studio.name}
+              <span className="text-accent mx-8">✦</span>
+            </span>
+          ))}
+        </Marquee>
+      </section>
+
+      {/* Featured Studio - Full width */}
+      <section className="py-24 md:py-32">
+        <div className="editorial-container mb-12">
+          <AnimatedSection animation="fade-up">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">
+              Featured Studio
+            </p>
+            <h2 className="editorial-subhead">The Archive</h2>
+          </AnimatedSection>
+        </div>
+
+        <div className="mb-24">
+          <StudioCard studio={studios[0]} index={0} variant="featured" />
+        </div>
+      </section>
+
+      {/* Studio Grid - Alternating large layouts */}
+      <section className="py-12 md:py-20">
+        <div className="editorial-container space-y-32 md:space-y-48">
+          {studios.slice(1).map((studio, index) => (
+            <StudioCard
+              key={studio.id}
+              studio={studio}
+              index={index + 1}
+              variant="large"
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Visual Journey Section */}
+      <section className="py-24 md:py-32 section-inverted">
+        <div className="editorial-container">
+          <AnimatedSection animation="fade-up">
+            <div className="max-w-3xl mb-16 md:mb-24">
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-background/60 mb-6">
+                Why This Matters
+              </p>
+              <h2 className="editorial-headline text-background mb-8">
+                A medium being born deserves to be witnessed
+              </h2>
+              <p className="editorial-body text-background/70">
+                East Africa is experiencing a quiet revolution in interactive media. 
+                Studios in Nairobi, Kampala, Dar es Salaam, and beyond are creating 
+                games that reflect local experiences and challenge global narratives.
+              </p>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection animation="fade-up" delay={200}>
+            <div className="grid md:grid-cols-3 gap-1">
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={studio1}
+                  alt="Studio work"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={studio2}
+                  alt="Game development"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={studio3}
+                  alt="Creative process"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-24 md:py-32">
+        <div className="editorial-container">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center max-w-2xl mx-auto">
+              <h2 className="editorial-headline mb-8">
+                Know a studio we should document?
+              </h2>
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-4 font-mono text-sm uppercase tracking-[0.15em] group"
+              >
+                <span className="link-underline">Get in touch</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-2">
+                  →
+                </span>
+              </Link>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </Layout>

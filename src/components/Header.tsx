@@ -1,36 +1,143 @@
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 const Header = () => {
   const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
+  const isHome = location.pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
 
   return (
-    <header className="border-b border-border">
-      <div className="editorial-container py-6 flex items-center justify-between">
-        <Link to="/" className="font-serif text-lg md:text-xl tracking-tight hover:text-accent transition-colors">
-          East African Game Development Archive
-        </Link>
-        <nav className="flex items-center gap-8">
+    <>
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          isScrolled || !isHome
+            ? "bg-background/95 backdrop-blur-sm border-b border-border"
+            : "bg-transparent",
+          isScrolled ? "py-4" : "py-6 md:py-8"
+        )}
+      >
+        <div className="editorial-container flex items-center justify-between">
+          {/* Logo */}
           <Link
             to="/"
-            className={`editorial-caption transition-colors hover:text-foreground ${
-              isActive("/") ? "text-foreground" : ""
-            }`}
+            className={cn(
+              "font-mono text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300",
+              isScrolled || !isHome
+                ? "text-foreground"
+                : "text-background"
+            )}
           >
-            Archive
+            EAGDA
           </Link>
-          <Link
-            to="/about"
-            className={`editorial-caption transition-colors hover:text-foreground ${
-              isActive("/about") ? "text-foreground" : ""
-            }`}
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-12">
+            {[
+              { path: "/", label: "Archive" },
+              { path: "/about", label: "About" },
+            ].map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={cn(
+                  "relative font-mono text-xs uppercase tracking-[0.15em] transition-colors py-2",
+                  isScrolled || !isHome
+                    ? "text-foreground/70 hover:text-foreground"
+                    : "text-background/70 hover:text-background",
+                  isActive(link.path) && "text-foreground"
+                )}
+              >
+                {link.label}
+                <span
+                  className={cn(
+                    "absolute bottom-0 left-0 w-full h-px transition-transform duration-300 origin-left",
+                    isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                    isActive(link.path) ? "scale-x-100" : "scale-x-0"
+                  )}
+                />
+              </Link>
+            ))}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className={cn(
+              "md:hidden relative w-8 h-8 flex flex-col justify-center items-center gap-1.5",
+              isScrolled || !isHome ? "text-foreground" : "text-background"
+            )}
+            aria-label="Toggle menu"
           >
-            About
-          </Link>
+            <span
+              className={cn(
+                "w-6 h-px transition-all duration-300",
+                isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                isMobileMenuOpen && "rotate-45 translate-y-1"
+              )}
+            />
+            <span
+              className={cn(
+                "w-6 h-px transition-all duration-300",
+                isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                isMobileMenuOpen && "-rotate-45 -translate-y-0.5"
+              )}
+            />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-background transition-all duration-500 flex flex-col justify-center items-center",
+          isMobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        )}
+      >
+        <nav className="flex flex-col items-center gap-8">
+          {[
+            { path: "/", label: "Archive" },
+            { path: "/about", label: "About" },
+          ].map((link, index) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={cn(
+                "font-serif text-5xl md:text-7xl transition-all duration-500",
+                isMobileMenuOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8",
+                isActive(link.path)
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              style={{ transitionDelay: `${index * 100 + 200}ms` }}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
       </div>
-    </header>
+    </>
   );
 };
 
