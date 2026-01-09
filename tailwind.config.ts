@@ -99,10 +99,19 @@ export default {
 				'serif'
 			],
 			mono: [
+				'JetBrains Mono',
 				'ui-monospace',
 				'SFMono-Regular',
 				'monospace'
 			]
+		},
+		transitionTimingFunction: {
+			'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
+		},
+		transitionDuration: {
+			'800': '800ms',
+			'1000': '1000ms',
+			'1200': '1200ms',
 		}
   	}
   },

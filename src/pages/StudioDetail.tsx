@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Layout from "@/components/Layout";
+import AnimatedSection from "@/components/AnimatedSection";
 import { getStudioById, getAdjacentStudios } from "@/data/studios";
 
 const StudioDetail = () => {
@@ -14,114 +15,185 @@ const StudioDetail = () => {
 
   return (
     <Layout>
-      {/* Hero Image */}
-      <section className="border-b border-border">
-        <div className="aspect-[21/9] md:aspect-[3/1] overflow-hidden bg-muted">
+      {/* Cinematic Hero - Full viewport */}
+      <section className="relative min-h-screen flex items-end bg-foreground overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0">
           <img
             src={studio.heroImage}
             alt={studio.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-70"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/50 to-transparent" />
+        </div>
+
+        {/* Hero content */}
+        <div className="relative z-10 editorial-container pb-16 md:pb-24 w-full">
+          <AnimatedSection animation="fade-up">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-background/60 mb-6">
+              {studio.location}, {studio.country}
+            </p>
+            <h1 className="brutalist-display text-background mb-8">
+              {studio.name}
+            </h1>
+            <p className="font-serif text-xl md:text-2xl text-background/80 max-w-2xl italic">
+              {studio.tagline}
+            </p>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* Studio Info */}
-      <section className="py-12 md:py-20 border-b border-border">
+      {/* Meta Info Bar */}
+      <section className="py-8 md:py-12 border-b border-border">
         <div className="editorial-container">
-          <div className="max-w-4xl">
-            <p className="editorial-caption mb-4">
-              {studio.location}, {studio.country}
-            </p>
-            <h1 className="editorial-headline mb-8">{studio.name}</h1>
-            
-            {/* Meta Info */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8 border-y border-border">
-              <div>
-                <p className="editorial-caption mb-1">Founded</p>
-                <p className="font-serif text-lg">{studio.founded}</p>
-              </div>
-              <div>
-                <p className="editorial-caption mb-1">Platform</p>
-                <p className="font-serif text-lg">{studio.platform}</p>
-              </div>
-              <div>
-                <p className="editorial-caption mb-1">Status</p>
-                <p className="font-serif text-lg">{studio.status}</p>
-              </div>
-              <div>
-                <p className="editorial-caption mb-1">Location</p>
-                <p className="font-serif text-lg">{studio.country}</p>
-              </div>
+          <AnimatedSection animation="fade-up">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { label: "Founded", value: studio.founded },
+                { label: "Platform", value: studio.platform },
+                { label: "Status", value: studio.status },
+                { label: "Location", value: studio.country },
+              ].map((item) => (
+                <div key={item.label}>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
+                    {item.label}
+                  </p>
+                  <p className="font-serif text-lg md:text-xl">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Narrative Section - Split layout */}
+      <section className="py-20 md:py-32">
+        <div className="editorial-container">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
+            {/* Left column - pull quote */}
+            <div className="lg:col-span-4">
+              <AnimatedSection animation="slide-right">
+                <div className="lg:sticky lg:top-32">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-6">
+                    The Story
+                  </p>
+                  <blockquote className="font-serif text-2xl md:text-3xl lg:text-4xl leading-tight italic text-muted-foreground">
+                    "{studio.description[0].split('.')[0]}."
+                  </blockquote>
+                </div>
+              </AnimatedSection>
+            </div>
+
+            {/* Right column - full narrative */}
+            <div className="lg:col-span-8 space-y-8">
+              {studio.description.map((paragraph, index) => (
+                <AnimatedSection key={index} animation="fade-up" delay={index * 100}>
+                  <p className="editorial-body text-foreground/90">{paragraph}</p>
+                </AnimatedSection>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Narrative */}
-      <section className="py-12 md:py-20 border-b border-border">
+      {/* Gallery - Asymmetric grid */}
+      <section className="py-12 md:py-20 section-inverted">
         <div className="editorial-container">
-          <div className="max-w-3xl space-y-6">
-            {studio.description.map((paragraph, index) => (
-              <p key={index} className="editorial-body text-foreground/90 leading-relaxed">
-                {paragraph}
-              </p>
+          <AnimatedSection animation="fade-up">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-background/60 mb-12">
+              Visual Archive
+            </p>
+          </AnimatedSection>
+
+          <div className="grid md:grid-cols-12 gap-4">
+            {studio.galleryImages.map((image, index) => (
+              <AnimatedSection
+                key={index}
+                animation="scale"
+                delay={index * 150}
+                className={index === 0 ? "md:col-span-8" : "md:col-span-4"}
+              >
+                <div
+                  className={`overflow-hidden ${
+                    index === 0 ? "aspect-[16/10]" : "aspect-square"
+                  }`}
+                >
+                  <img
+                    src={image}
+                    alt={`${studio.name} gallery ${index + 1}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Gallery */}
-      <section className="py-12 md:py-20 border-b border-border">
-        <div className="editorial-container">
-          <p className="editorial-caption mb-8">Gallery</p>
-          <div className="grid md:grid-cols-2 gap-6">
-            {studio.galleryImages.map((image, index) => (
-              <div key={index} className="aspect-[4/3] overflow-hidden bg-muted">
+      {/* Navigation - Large visual */}
+      <section className="border-t border-border">
+        <div className="grid md:grid-cols-2">
+          {/* Previous */}
+          {prev ? (
+            <Link
+              to={`/studio/${prev.id}`}
+              className="group relative overflow-hidden"
+            >
+              <div className="aspect-[16/9] md:aspect-auto md:h-80">
                 <img
-                  src={image}
-                  alt={`${studio.name} gallery image ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  src={prev.heroImage}
+                  alt={prev.name}
+                  className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500"
                 />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              <div className="absolute inset-0 flex items-center p-8 md:p-12">
+                <div className="flex items-center gap-4">
+                  <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-2" />
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
+                      Previous
+                    </p>
+                    <p className="font-serif text-2xl md:text-3xl group-hover:text-accent transition-colors">
+                      {prev.name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div className="hidden md:block bg-muted" />
+          )}
 
-      {/* Navigation */}
-      <section className="py-12 md:py-16">
-        <div className="editorial-container">
-          <div className="flex items-center justify-between">
-            {prev ? (
-              <Link
-                to={`/studio/${prev.id}`}
-                className="group flex items-center gap-3 hover:text-accent transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-                <div className="text-left">
-                  <p className="editorial-caption mb-1">Previous</p>
-                  <p className="font-serif text-lg">{prev.name}</p>
+          {/* Next */}
+          {next ? (
+            <Link
+              to={`/studio/${next.id}`}
+              className="group relative overflow-hidden border-t md:border-t-0 md:border-l border-border"
+            >
+              <div className="aspect-[16/9] md:aspect-auto md:h-80">
+                <img
+                  src={next.heroImage}
+                  alt={next.name}
+                  className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500"
+                />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-end p-8 md:p-12 text-right">
+                <div className="flex items-center gap-4">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
+                      Next
+                    </p>
+                    <p className="font-serif text-2xl md:text-3xl group-hover:text-accent transition-colors">
+                      {next.name}
+                    </p>
+                  </div>
+                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                 </div>
-              </Link>
-            ) : (
-              <div />
-            )}
-            
-            {next ? (
-              <Link
-                to={`/studio/${next.id}`}
-                className="group flex items-center gap-3 hover:text-accent transition-colors text-right"
-              >
-                <div>
-                  <p className="editorial-caption mb-1">Next</p>
-                  <p className="font-serif text-lg">{next.name}</p>
-                </div>
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </Link>
-            ) : (
-              <div />
-            )}
-          </div>
+              </div>
+            </Link>
+          ) : (
+            <div className="hidden md:block bg-muted" />
+          )}
         </div>
       </section>
     </Layout>
