@@ -8,109 +8,123 @@ interface VisualArchiveProps {
   studioName: string;
 }
 
-// Layout patterns for different image counts
-const getLayoutPattern = (count: number): string[][] => {
+// Row-based layout configuration for matched heights
+type RowConfig = {
+  widths: string[];
+  aspectRatio: string;
+};
+
+const getRowLayouts = (count: number): RowConfig[] => {
+  if (count === 1) {
+    return [{ widths: ["w-full"], aspectRatio: "aspect-[21/9]" }];
+  }
+
   if (count === 2) {
-    return [
-      ["md:col-span-8", "aspect-[16/10]"],
-      ["md:col-span-4", "aspect-square"],
-    ];
+    // Single row, same aspect ratio for matched heights
+    return [{ widths: ["w-[60%]", "w-[40%]"], aspectRatio: "aspect-[16/10]" }];
   }
 
   if (count === 3) {
     return [
-      ["md:col-span-12", "aspect-[21/9]"],
-      ["md:col-span-5", "aspect-[3/4]"],
-      ["md:col-span-7", "aspect-[16/10]"],
+      { widths: ["w-full"], aspectRatio: "aspect-[21/9]" },
+      { widths: ["w-[45%]", "w-[55%]"], aspectRatio: "aspect-[4/3]" },
     ];
   }
 
   if (count === 4) {
     return [
-      ["md:col-span-8", "aspect-[16/10]"],
-      ["md:col-span-4", "aspect-square"],
-      ["md:col-span-4", "aspect-square"],
-      ["md:col-span-8", "aspect-[16/10]"],
+      { widths: ["w-[65%]", "w-[35%]"], aspectRatio: "aspect-[4/3]" },
+      { widths: ["w-[35%]", "w-[65%]"], aspectRatio: "aspect-[4/3]" },
     ];
   }
 
   if (count === 5) {
     return [
-      ["md:col-span-12", "aspect-[21/9]"],
-      ["md:col-span-6", "aspect-[4/3]"],
-      ["md:col-span-6", "aspect-[4/3]"],
-      ["md:col-span-5", "aspect-[3/4]"],
-      ["md:col-span-7", "aspect-[16/10]"],
+      { widths: ["w-full"], aspectRatio: "aspect-[21/9]" },
+      { widths: ["w-[50%]", "w-[50%]"], aspectRatio: "aspect-[4/3]" },
+      { widths: ["w-[40%]", "w-[60%]"], aspectRatio: "aspect-[16/10]" },
     ];
   }
 
   if (count === 6) {
     return [
-      ["md:col-span-8", "aspect-[16/10]"],
-      ["md:col-span-4", "aspect-square"],
-      ["md:col-span-4", "aspect-[3/4]"],
-      ["md:col-span-4", "aspect-[3/4]"],
-      ["md:col-span-4", "aspect-[3/4]"],
-      ["md:col-span-12", "aspect-[21/9]"],
+      { widths: ["w-[60%]", "w-[40%]"], aspectRatio: "aspect-[16/10]" },
+      { widths: ["w-[33.33%]", "w-[33.33%]", "w-[33.33%]"], aspectRatio: "aspect-[3/4]" },
+      { widths: ["w-full"], aspectRatio: "aspect-[21/9]" },
     ];
   }
 
   if (count === 7) {
     return [
-      ["md:col-span-12", "aspect-[21/9]"],
-      ["md:col-span-6", "aspect-[4/3]"],
-      ["md:col-span-6", "aspect-[4/3]"],
-      ["md:col-span-4", "aspect-square"],
-      ["md:col-span-8", "aspect-[16/10]"],
-      ["md:col-span-5", "aspect-[3/4]"],
-      ["md:col-span-7", "aspect-[16/10]"],
+      { widths: ["w-full"], aspectRatio: "aspect-[21/9]" },
+      { widths: ["w-[50%]", "w-[50%]"], aspectRatio: "aspect-[4/3]" },
+      { widths: ["w-[35%]", "w-[65%]"], aspectRatio: "aspect-[16/10]" },
+      { widths: ["w-[55%]", "w-[45%]"], aspectRatio: "aspect-[4/3]" },
     ];
   }
 
-  // 8+ images: repeating pattern
-  const patterns: string[][] = [];
-  for (let i = 0; i < count; i++) {
-    const position = i % 8;
-    switch (position) {
-      case 0:
-        patterns.push(["md:col-span-8", "aspect-[16/10]"]);
-        break;
-      case 1:
-        patterns.push(["md:col-span-4", "aspect-square"]);
-        break;
-      case 2:
-        patterns.push(["md:col-span-5", "aspect-[3/4]"]);
-        break;
-      case 3:
-        patterns.push(["md:col-span-7", "aspect-[16/10]"]);
-        break;
-      case 4:
-        patterns.push(["md:col-span-12", "aspect-[21/9]"]);
-        break;
-      case 5:
-        patterns.push(["md:col-span-6", "aspect-[4/3]"]);
-        break;
-      case 6:
-        patterns.push(["md:col-span-6", "aspect-[4/3]"]);
-        break;
-      case 7:
-        patterns.push(["md:col-span-4", "aspect-square"]);
-        break;
+  // 8+ images: build repeating row patterns
+  const rows: RowConfig[] = [];
+  let remaining = count;
+  let patternIndex = 0;
+
+  const patterns: RowConfig[] = [
+    { widths: ["w-[60%]", "w-[40%]"], aspectRatio: "aspect-[16/10]" },
+    { widths: ["w-[33.33%]", "w-[33.33%]", "w-[33.33%]"], aspectRatio: "aspect-[3/4]" },
+    { widths: ["w-full"], aspectRatio: "aspect-[21/9]" },
+    { widths: ["w-[45%]", "w-[55%]"], aspectRatio: "aspect-[4/3]" },
+  ];
+
+  while (remaining > 0) {
+    const pattern = patterns[patternIndex % patterns.length];
+    const imagesInRow = Math.min(pattern.widths.length, remaining);
+    
+    if (imagesInRow < pattern.widths.length && remaining <= 2) {
+      // Last row with fewer images - adjust widths
+      if (remaining === 1) {
+        rows.push({ widths: ["w-full"], aspectRatio: "aspect-[21/9]" });
+      } else {
+        rows.push({ widths: ["w-[50%]", "w-[50%]"], aspectRatio: "aspect-[4/3]" });
+      }
+      break;
     }
+    
+    rows.push({ widths: pattern.widths.slice(0, imagesInRow), aspectRatio: pattern.aspectRatio });
+    remaining -= imagesInRow;
+    patternIndex++;
   }
-  return patterns;
+
+  return rows;
 };
 
 const VisualArchive = ({ images, studioName }: VisualArchiveProps) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const layoutPattern = getLayoutPattern(images.length);
+  const rowLayouts = getRowLayouts(images.length);
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
     setLightboxOpen(true);
   };
+
+  // Build rows of images
+  let imageIndex = 0;
+  const rows = rowLayouts.map((row, rowIndex) => {
+    const rowImages = row.widths.map((width, i) => {
+      const currentIndex = imageIndex;
+      imageIndex++;
+      if (currentIndex >= images.length) return null;
+      
+      return {
+        src: images[currentIndex],
+        width,
+        index: currentIndex,
+      };
+    }).filter(Boolean);
+
+    return { ...row, images: rowImages, rowIndex };
+  });
 
   return (
     <>
@@ -122,44 +136,48 @@ const VisualArchive = ({ images, studioName }: VisualArchiveProps) => {
             </p>
           </AnimatedSection>
 
-          <div className="grid md:grid-cols-12 gap-4">
-            {images.map((image, index) => {
-              const [colSpan, aspectRatio] = layoutPattern[index] || [
-                "md:col-span-6",
-                "aspect-[4/3]",
-              ];
-
-              return (
-                <AnimatedSection
-                  key={index}
-                  animation="scale"
-                  delay={index * 100}
-                  className={cn(colSpan, "group")}
-                >
-                  <button
-                    onClick={() => openLightbox(index)}
-                    className={cn(
-                      "w-full overflow-hidden border border-background/10 cursor-pointer",
-                      "transition-all duration-500",
-                      "hover:border-background/30",
-                      aspectRatio
-                    )}
-                    aria-label={`View ${studioName} gallery image ${index + 1}`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${studioName} archive ${index + 1}`}
-                      className={cn(
-                        "w-full h-full object-cover",
-                        "transition-all duration-700",
-                        "group-hover:scale-[1.03]",
-                        "grayscale-0 group-hover:grayscale"
-                      )}
-                    />
-                  </button>
-                </AnimatedSection>
-              );
-            })}
+          <div className="flex flex-col gap-4">
+            {rows.map((row) => (
+              <div 
+                key={row.rowIndex} 
+                className="flex gap-4"
+              >
+                {row.images.map((img) => {
+                  if (!img) return null;
+                  
+                  return (
+                    <AnimatedSection
+                      key={img.index}
+                      animation="scale"
+                      delay={img.index * 100}
+                      className={cn(img.width, "flex-shrink-0")}
+                    >
+                      <button
+                        onClick={() => openLightbox(img.index)}
+                        className={cn(
+                          "w-full overflow-hidden border border-background/10 cursor-pointer",
+                          "transition-all duration-500",
+                          "hover:border-background/30",
+                          row.aspectRatio
+                        )}
+                        aria-label={`View ${studioName} gallery image ${img.index + 1}`}
+                      >
+                        <img
+                          src={img.src}
+                          alt={`${studioName} archive ${img.index + 1}`}
+                          className={cn(
+                            "w-full h-full object-cover",
+                            "transition-all duration-700",
+                            "group-hover:scale-[1.03]",
+                            "grayscale-0 hover:grayscale"
+                          )}
+                        />
+                      </button>
+                    </AnimatedSection>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </section>

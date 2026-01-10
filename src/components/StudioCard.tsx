@@ -7,15 +7,26 @@ interface StudioCardProps {
   studio: Studio;
   index: number;
   className?: string;
+  aspectRatio?: string;
+  variant?: "featured" | "standard" | "wide";
 }
 
-const StudioCard = ({ studio, index, className }: StudioCardProps) => {
+const StudioCard = ({ 
+  studio, 
+  index, 
+  className,
+  aspectRatio = "aspect-[3/4]",
+  variant = "standard"
+}: StudioCardProps) => {
   return (
     <AnimatedSection animation="fade-up" delay={index * 100}>
-      <Link to={`/studio/${studio.id}`} className={cn("group block", className)}>
-        <article className="space-y-4">
+      <Link to={`/studio/${studio.id}`} className={cn("group block h-full", className)}>
+        <article className="space-y-4 h-full">
           {/* Image with museum frame */}
-          <div className="relative aspect-[3/4] overflow-hidden border border-border">
+          <div className={cn(
+            "relative overflow-hidden border border-border",
+            aspectRatio
+          )}>
             <img
               src={studio.heroImage}
               alt={studio.name}
@@ -25,7 +36,10 @@ const StudioCard = ({ studio, index, className }: StudioCardProps) => {
             
             {/* Logo overlay - bottom right corner */}
             {studio.logo && (
-              <div className="absolute bottom-4 right-4 w-10 h-10 bg-background/90 rounded-sm flex items-center justify-center p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className={cn(
+                "absolute bottom-4 right-4 bg-background/90 rounded-sm flex items-center justify-center p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                variant === "featured" ? "w-12 h-12" : "w-10 h-10"
+              )}>
                 <img
                   src={studio.logo}
                   alt={`${studio.name} logo`}
@@ -37,7 +51,10 @@ const StudioCard = ({ studio, index, className }: StudioCardProps) => {
           
           {/* Museum placard */}
           <div className="space-y-1.5">
-            <h3 className="font-serif text-lg md:text-xl group-hover:text-accent transition-colors">
+            <h3 className={cn(
+              "font-serif group-hover:text-accent transition-colors",
+              variant === "featured" ? "text-xl md:text-2xl" : "text-lg md:text-xl"
+            )}>
               {studio.name}
             </h3>
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
