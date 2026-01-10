@@ -53,6 +53,16 @@ const GalleryPreview = () => {
                 />
                 <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-500" />
               </div>
+              {/* Logo overlay */}
+              {featuredStudios[0]?.logo && (
+                <div className="absolute bottom-4 right-4 w-10 h-10 bg-background/90 rounded-sm flex items-center justify-center p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <img
+                    src={featuredStudios[0]?.logo}
+                    alt={`${featuredStudios[0]?.name} logo`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
               {/* Museum placard */}
               <div className="mt-4 md:mt-6 flex flex-col md:flex-row md:items-baseline md:justify-between gap-2">
                 <h3 className="font-serif text-xl md:text-2xl group-hover:text-accent transition-colors">

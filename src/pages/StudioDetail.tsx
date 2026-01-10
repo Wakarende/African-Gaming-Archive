@@ -50,20 +50,34 @@ const StudioDetail = () => {
       <section className="py-8 md:py-12 border-b border-border">
         <div className="editorial-container">
           <AnimatedSection animation="fade-up">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[
-                { label: "Founded", value: studio.founded },
-                { label: "Platform", value: studio.platform },
-                { label: "Status", value: studio.status },
-                { label: "Location", value: studio.country },
-              ].map((item) => (
-                <div key={item.label}>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
-                    {item.label}
-                  </p>
-                  <p className="font-serif text-lg md:text-xl">{item.value}</p>
+            <div className="flex flex-wrap items-center gap-8">
+              {/* Studio Logo */}
+              {studio.logo && (
+                <div className="w-16 h-16 border border-border rounded-sm flex items-center justify-center p-2 bg-background">
+                  <img
+                    src={studio.logo}
+                    alt={`${studio.name} logo`}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-              ))}
+              )}
+              
+              {/* Meta items */}
+              <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-8">
+                {[
+                  { label: "Founded", value: studio.founded },
+                  { label: "Platform", value: studio.platform },
+                  { label: "Status", value: studio.status },
+                  { label: "Location", value: studio.country },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
+                      {item.label}
+                    </p>
+                    <p className="font-serif text-lg md:text-xl">{item.value}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </AnimatedSection>
         </div>

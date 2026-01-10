@@ -33,6 +33,7 @@ export interface Studio {
   description: string[];
   heroImage: string;
   galleryImages: string[];
+  logo?: string;
   games: Game[];
   interviews: Interview[];
 }
