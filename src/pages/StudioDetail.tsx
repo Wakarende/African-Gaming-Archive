@@ -18,44 +18,68 @@ const StudioDetail = () => {
 
   return (
     <Layout>
-      {/* Cinematic Hero - Full viewport */}
-      <section className="relative min-h-screen flex items-end bg-foreground overflow-hidden">
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <img
-            src={studio.heroImage}
-            alt={studio.name}
-            className="w-full h-full object-cover opacity-70"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/50 to-transparent" />
-        </div>
-
-        {/* Hero content */}
-        <div className="relative z-10 editorial-container pb-16 md:pb-24 w-full">
-          <AnimatedSection animation="fade-up">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-background/60 mb-6">
-              {studio.location}, {studio.country}
-            </p>
-            <h1 className="brutalist-display text-background mb-8">
-              {studio.name}
-            </h1>
-            <p className="font-serif text-xl md:text-2xl text-background/80 max-w-2xl italic">
-              {studio.tagline}
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Modern Meta Info Section - Editorial Card Layout */}
-      <section className="py-16 md:py-24 border-b border-border">
+      {/* Editorial Hero - Grid-Based Layout */}
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 border-b border-border">
         <div className="editorial-container">
-          <AnimatedSection animation="fade-up">
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
-              {/* Left - Logo and Label */}
-              <div className="lg:col-span-3">
-                <div className="lg:sticky lg:top-32">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12">
+            {/* Left Column - Typography */}
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <AnimatedSection animation="fade-up">
+                <div className="mb-8 lg:mb-12">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-6">
+                    {studio.location}, {studio.country}
+                  </p>
+                  
+                  {/* Studio Name - Large stacked display */}
+                  <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.85] tracking-tight mb-8">
+                    {studio.name.split(' ').map((word, i) => (
+                      <span key={i} className="block">{word}</span>
+                    ))}
+                  </h1>
+                  
+                  <p className="font-serif text-lg md:text-xl text-muted-foreground italic max-w-md">
+                    {studio.tagline}
+                  </p>
+                </div>
+              </AnimatedSection>
+              
+              {/* Meta Info - Integrated into hero */}
+              <AnimatedSection animation="fade-up" delay={200}>
+                <div className="hidden lg:block">
+                  <div className="grid grid-cols-2 gap-6 border-t border-border pt-6">
+                    {[
+                      { label: "Founded", value: studio.founded },
+                      { label: "Platform", value: studio.platform },
+                      { label: "Status", value: studio.status },
+                      { label: "Location", value: studio.country },
+                    ].map((item) => (
+                      <div key={item.label} className="py-2">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1">
+                          {item.label}
+                        </p>
+                        <p className="font-serif text-base">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </AnimatedSection>
+            </div>
+            
+            {/* Right Column - Featured Image */}
+            <div className="lg:col-span-7">
+              <AnimatedSection animation="fade-up" delay={100}>
+                <div className="relative group">
+                  <div className="aspect-[4/5] md:aspect-[3/4] lg:aspect-[4/5] overflow-hidden border border-border">
+                    <img
+                      src={studio.heroImage}
+                      alt={studio.name}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                    />
+                  </div>
+                  
+                  {/* Logo overlay */}
                   {studio.logo && (
-                    <div className="w-20 h-20 md:w-24 md:h-24 border border-border flex items-center justify-center p-3 bg-background mb-6">
+                    <div className="absolute bottom-4 right-4 w-16 h-16 md:w-20 md:h-20 bg-background border border-border p-3 opacity-90">
                       <img
                         src={studio.logo}
                         alt={`${studio.name} logo`}
@@ -63,36 +87,31 @@ const StudioDetail = () => {
                       />
                     </div>
                   )}
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                    Studio Profile
-                  </p>
                 </div>
-              </div>
-              
-              {/* Right - Meta Grid */}
-              <div className="lg:col-span-9">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+              </AnimatedSection>
+            </div>
+            
+            {/* Mobile Meta Info */}
+            <div className="lg:hidden col-span-full">
+              <AnimatedSection animation="fade-up" delay={200}>
+                <div className="grid grid-cols-2 gap-6 border-t border-border pt-6">
                   {[
                     { label: "Founded", value: studio.founded },
                     { label: "Platform", value: studio.platform },
                     { label: "Status", value: studio.status },
                     { label: "Location", value: studio.country },
-                  ].map((item, index) => (
-                    <div key={item.label} className="relative">
-                      {/* Connecting line on desktop */}
-                      {index < 3 && (
-                        <div className="hidden md:block absolute top-1/2 -right-6 w-12 h-px bg-border" />
-                      )}
-                      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-3">
+                  ].map((item) => (
+                    <div key={item.label} className="py-2">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1">
                         {item.label}
                       </p>
-                      <p className="font-serif text-xl md:text-2xl leading-tight">{item.value}</p>
+                      <p className="font-serif text-base">{item.value}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
             </div>
-          </AnimatedSection>
+          </div>
         </div>
       </section>
 
