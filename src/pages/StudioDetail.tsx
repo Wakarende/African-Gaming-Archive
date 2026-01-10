@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import AnimatedSection from "@/components/AnimatedSection";
 import GamesSection from "@/components/GamesSection";
 import InterviewsSection from "@/components/InterviewsSection";
+import VisualArchive from "@/components/VisualArchive";
 import { getStudioById, getAdjacentStudios } from "@/data/studios";
 
 const StudioDetail = () => {
@@ -98,39 +99,8 @@ const StudioDetail = () => {
         </div>
       </section>
 
-      {/* Gallery - Asymmetric grid */}
-      <section className="py-12 md:py-20 section-inverted">
-        <div className="editorial-container">
-          <AnimatedSection animation="fade-up">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-background/60 mb-12">
-              Visual Archive
-            </p>
-          </AnimatedSection>
-
-          <div className="grid md:grid-cols-12 gap-4">
-            {studio.galleryImages.map((image, index) => (
-              <AnimatedSection
-                key={index}
-                animation="scale"
-                delay={index * 150}
-                className={index === 0 ? "md:col-span-8" : "md:col-span-4"}
-              >
-                <div
-                  className={`overflow-hidden ${
-                    index === 0 ? "aspect-[16/10]" : "aspect-square"
-                  }`}
-                >
-                  <img
-                    src={image}
-                    alt={`${studio.name} gallery ${index + 1}`}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Visual Archive - Asymmetric masonry gallery */}
+      <VisualArchive images={studio.galleryImages} studioName={studio.name} />
 
       {/* Games Section */}
       <GamesSection games={studio.games} />

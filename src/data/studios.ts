@@ -53,7 +53,7 @@ export const studios: Studio[] = [
       "Currently, the studio is developing an ambitious multiplayer experience that aims to connect players across Africa in a shared virtual savanna, funded through a combination of grants and private investment."
     ],
     heroImage: studio1,
-    galleryImages: [studio1, studio2],
+    galleryImages: [studio1, studio2, studio3, studio4, studio1, studio2],
     games: [
       {
         id: "savanna-keeper",
@@ -165,7 +165,7 @@ export const studios: Studio[] = [
       "The studio operates from a restored Swahili townhouse, its walls lined with artifacts that inspire their digital creations."
     ],
     heroImage: studio2,
-    galleryImages: [studio2, studio1],
+    galleryImages: [studio2, studio1, studio3, studio4, studio2],
     games: [
       {
         id: "swahili-traders",
@@ -226,7 +226,7 @@ export const studios: Studio[] = [
       "The studio's headquarters doubles as a recording space, allowing seamless integration between music production and game development."
     ],
     heroImage: studio3,
-    galleryImages: [studio3, studio4],
+    galleryImages: [studio3, studio4, studio1, studio2, studio3, studio4, studio1],
     games: [
       {
         id: "beat-of-kampala",
@@ -296,7 +296,7 @@ export const studios: Studio[] = [
       "Their current project, an open-world exploration of a transformed Dar es Salaam, has received critical acclaim and funding from international arts councils."
     ],
     heroImage: studio4,
-    galleryImages: [studio4, studio3],
+    galleryImages: [studio4, studio3, studio1, studio2],
     games: [
       {
         id: "dar-2118",
