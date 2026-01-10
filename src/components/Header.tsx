@@ -51,7 +51,7 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8 lg:gap-12">
             {[
-              { path: "/", label: "Studios", active: true },
+              { path: "/studios", label: "Studios", active: true },
               { path: "#", label: "Creators", coming: true },
               { path: "#", label: "Esports", coming: true },
               { path: "#", label: "Spaces", coming: true },
@@ -151,7 +151,7 @@ const Header = () => {
       >
         <nav className="flex flex-col items-center gap-6">
           {[
-            { path: "/", label: "Studios", active: true },
+            { path: "/studios", label: "Studios", active: true },
             { path: "#", label: "Creators", coming: true },
             { path: "#", label: "Esports", coming: true },
             { path: "#", label: "Spaces", coming: true },
