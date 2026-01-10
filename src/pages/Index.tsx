@@ -1,8 +1,10 @@
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ArrowDown } from "lucide-react";
 import Layout from "@/components/Layout";
 import StudioCard from "@/components/StudioCard";
 import AnimatedSection from "@/components/AnimatedSection";
+import CountryFilter from "@/components/CountryFilter";
 import { studios } from "@/data/studios";
 import heroImage from "@/assets/hero-image.jpg";
 import studio1 from "@/assets/studio-1.jpg";
@@ -10,6 +12,27 @@ import studio2 from "@/assets/studio-2.jpg";
 import studio3 from "@/assets/studio-3.jpg";
 
 const Index = () => {
+  const [selectedCountry, setSelectedCountry] = useState<string>("all");
+
+  // Extract unique countries from studios data, sorted alphabetically
+  const countries = useMemo(
+    () => [...new Set(studios.map((s) => s.country))].sort(),
+    []
+  );
+
+  // Filter studios based on selection
+  const filteredStudios = useMemo(
+    () =>
+      selectedCountry === "all"
+        ? studios
+        : studios.filter((s) => s.country === selectedCountry),
+    [selectedCountry]
+  );
+
+  // Get featured studio (first from filtered list)
+  const featuredStudio = filteredStudios[0];
+  const otherStudios = filteredStudios.slice(1);
+
   return (
     <Layout>
       {/* Hero Section - Full viewport, immersive */}
@@ -46,7 +69,7 @@ const Index = () => {
         <div className="relative z-10 editorial-container pb-12 md:pb-20">
           <div className="mb-16 md:mb-24">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-background/60 mb-8">
-              East African Game Development Archive
+              African Game Development Archive
             </p>
             <h1 className="brutalist-headline text-background max-w-[14ch]">
               Documenting the studios building Africa's interactive future
@@ -68,30 +91,54 @@ const Index = () => {
         <div className="editorial-container mb-12">
           <AnimatedSection animation="fade-up">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">
-              Featured Studio
+              The Archive
             </p>
-            <h2 className="editorial-subhead">The Archive</h2>
+            <h2 className="editorial-subhead mb-8">Studios</h2>
+          </AnimatedSection>
+
+          {/* Country Filter */}
+          <AnimatedSection animation="fade-up" delay={100}>
+            <CountryFilter
+              countries={countries}
+              selectedCountry={selectedCountry}
+              onCountryChange={setSelectedCountry}
+            />
           </AnimatedSection>
         </div>
 
-        <div className="mb-24">
-          <StudioCard studio={studios[0]} index={0} variant="featured" />
-        </div>
+        {featuredStudio && (
+          <div className="mb-24">
+            <StudioCard studio={featuredStudio} index={0} variant="featured" />
+          </div>
+        )}
       </section>
 
       {/* Studio Grid - Alternating large layouts */}
-      <section className="py-12 md:py-20">
-        <div className="editorial-container space-y-32 md:space-y-48">
-          {studios.slice(1).map((studio, index) => (
-            <StudioCard
-              key={studio.id}
-              studio={studio}
-              index={index + 1}
-              variant="large"
-            />
-          ))}
-        </div>
-      </section>
+      {otherStudios.length > 0 && (
+        <section className="py-12 md:py-20">
+          <div className="editorial-container space-y-32 md:space-y-48">
+            {otherStudios.map((studio, index) => (
+              <StudioCard
+                key={studio.id}
+                studio={studio}
+                index={index + 1}
+                variant="large"
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Empty state when no studios match filter */}
+      {filteredStudios.length === 0 && (
+        <section className="py-24">
+          <div className="editorial-container text-center">
+            <p className="editorial-body text-muted-foreground">
+              No studios found in {selectedCountry}. More studios coming soon.
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* Visual Journey Section */}
       <section className="py-24 md:py-32 section-inverted">
@@ -105,9 +152,9 @@ const Index = () => {
                 A medium being born deserves to be witnessed
               </h2>
               <p className="editorial-body text-background/70">
-                East Africa is experiencing a quiet revolution in interactive media. 
-                Studios in Nairobi, Kampala, Dar es Salaam, and beyond are creating 
-                games that reflect local experiences and challenge global narratives.
+                Africa is experiencing a quiet revolution in interactive media. 
+                Studios in Nairobi, Lagos, Johannesburg, Cairo, Kampala, and beyond 
+                are creating games that reflect local experiences and challenge global narratives.
               </p>
             </div>
           </AnimatedSection>

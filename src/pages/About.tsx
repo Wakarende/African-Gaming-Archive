@@ -49,8 +49,8 @@ const About = () => {
             <div className="lg:col-span-8">
               <AnimatedSection animation="fade-up" delay={100}>
                 <p className="editorial-body text-foreground/90 mb-8">
-                  The East African Game Development Archive exists to document and celebrate 
-                  the full spectrum of gaming culture across the region. From the studios 
+                  The African Game Development Archive exists to document and celebrate 
+                  the full spectrum of gaming culture across the continent. From the studios 
                   creating games, to the content creators building communities, to the esports 
                   players competing internationally, to the cafes and spaces where gaming 
                   happens—we believe all of it deserves to be witnessed and preserved.
@@ -97,12 +97,12 @@ const About = () => {
                 Why This Matters
               </p>
               <h2 className="editorial-headline text-background mb-12">
-                East Africa is experiencing a quiet revolution in interactive media
+                Africa is experiencing a quiet revolution in interactive media
               </h2>
               <p className="editorial-body text-background/80">
-                Studios in Nairobi, Kampala, Dar es Salaam, and Kigali are creating 
-                games that reflect local experiences, challenge global narratives, and 
-                push the boundaries of the medium itself.
+                Studios in Nairobi, Lagos, Johannesburg, Cairo, Kampala, Dar es Salaam, 
+                and Kigali are creating games that reflect local experiences, challenge 
+                global narratives, and push the boundaries of the medium itself.
               </p>
             </div>
           </AnimatedSection>
@@ -164,14 +164,14 @@ const About = () => {
               </h2>
               <p className="editorial-body text-foreground/90 mb-8">
                 We're always looking to expand the archive. If you know of a game 
-                development studio in East Africa that should be included, or if 
+                development studio in Africa that should be included, or if 
                 you're a studio looking to be featured, please reach out.
               </p>
               <a
-                href="mailto:hello@eagda.org"
+                href="mailto:hello@agda.org"
                 className="inline-flex items-center gap-4 font-mono text-sm uppercase tracking-[0.15em] group"
               >
-                <span className="link-underline text-accent">hello@eagda.org</span>
+                <span className="link-underline text-accent">hello@agda.org</span>
                 <span className="text-accent transition-transform duration-300 group-hover:translate-x-2">
                   →
                 </span>

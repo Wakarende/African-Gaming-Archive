@@ -48,7 +48,7 @@ export const studios: Studio[] = [
     status: "Active",
     tagline: "Bringing African wildlife to life through play",
     description: [
-      "Founded in a small apartment in Westlands, Savanna Interactive has grown to become one of East Africa's most recognized game studios. Their debut title, a wildlife management simulation, captured global attention for its authentic portrayal of African ecosystems.",
+      "Founded in a small apartment in Westlands, Savanna Interactive has grown to become one of Africa's most recognized game studios. Their debut title, a wildlife management simulation, captured global attention for its authentic portrayal of African ecosystems.",
       "The team of twelve works from a converted warehouse in Nairobi's industrial district, surrounded by concept art and mounted monitors displaying their latest prototypes. Their commitment to ecological accuracy has led to partnerships with conservation organizations across the continent.",
       "Currently, the studio is developing an ambitious multiplayer experience that aims to connect players across Africa in a shared virtual savanna, funded through a combination of grants and private investment."
     ],
@@ -219,10 +219,10 @@ export const studios: Studio[] = [
     founded: "2020",
     platform: "Mobile, Web",
     status: "Active",
-    tagline: "Where East African music meets interactive art",
+    tagline: "Where African music meets interactive art",
     description: [
-      "What began as a side project by three music producers has evolved into Uganda's premier rhythm game studio. Kampala Rhythm Studios creates games that celebrate the diverse musical traditions of East Africa, from traditional drumming to contemporary Afrobeats.",
-      "Their flagship title features collaborations with over fifty artists from across the region, each contributing original tracks and cultural context. The game has become an unexpected platform for musical discovery, introducing global audiences to East African sounds.",
+      "What began as a side project by three music producers has evolved into Uganda's premier rhythm game studio. Kampala Rhythm Studios creates games that celebrate the diverse musical traditions of Africa, from traditional drumming to contemporary Afrobeats.",
+      "Their flagship title features collaborations with over fifty artists from across the region, each contributing original tracks and cultural context. The game has become an unexpected platform for musical discovery, introducing global audiences to African sounds.",
       "The studio's headquarters doubles as a recording space, allowing seamless integration between music production and game development."
     ],
     heroImage: studio3,
@@ -292,7 +292,7 @@ export const studios: Studio[] = [
     tagline: "Imagining African cities of tomorrow",
     description: [
       "Dar Futures Collective occupies a unique position in the African gaming landscape, focusing exclusively on Afrofuturist narratives. Their games imagine African cities a century from now, blending speculative technology with traditional aesthetics.",
-      "The collective operates on a cooperative model, with all members sharing equally in creative decisions and financial outcomes. This structure has attracted talent from across East Africa, creating a diverse team united by a shared vision of the future.",
+      "The collective operates on a cooperative model, with all members sharing equally in creative decisions and financial outcomes. This structure has attracted talent from across Africa, creating a diverse team united by a shared vision of the future.",
       "Their current project, an open-world exploration of a transformed Dar es Salaam, has received critical acclaim and funding from international arts councils."
     ],
     heroImage: studio4,

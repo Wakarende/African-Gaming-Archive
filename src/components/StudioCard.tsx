@@ -71,7 +71,7 @@ const StudioCard = ({ studio, index, variant = "medium" }: StudioCardProps) => {
             {/* Content */}
             <div className="space-y-6 md:[direction:ltr]">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                {studio.founded} — {studio.location}
+                {studio.founded} — {studio.location}, {studio.country}
               </p>
               <h3 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-none group-hover:text-accent transition-colors duration-300">
                 {studio.name}
@@ -109,7 +109,7 @@ const StudioCard = ({ studio, index, variant = "medium" }: StudioCardProps) => {
           </div>
           <div className="space-y-3">
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              {studio.location}
+              {studio.location}, {studio.country}
             </p>
             <h3 className="font-serif text-2xl md:text-3xl leading-tight group-hover:text-accent transition-colors duration-300">
               {studio.name}

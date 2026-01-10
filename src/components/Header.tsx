@@ -45,7 +45,7 @@ const Header = () => {
                 : "text-background"
             )}
           >
-            EAGDA
+            AGDA
           </Link>
 
           {/* Desktop Navigation */}
