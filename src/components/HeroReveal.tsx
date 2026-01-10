@@ -78,7 +78,7 @@ const HeroReveal = () => {
               isRevealed ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
             )}
           >
-            AGDA
+            AGA
           </h1>
         </div>
 
@@ -89,7 +89,7 @@ const HeroReveal = () => {
               isRevealed ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
             )}
           >
-            African Game Development Archive
+            African Gaming Archive
           </p>
         </div>
       </div>

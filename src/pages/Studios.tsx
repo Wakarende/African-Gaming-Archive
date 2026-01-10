@@ -1,9 +1,11 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import StudioCard from "@/components/StudioCard";
 import AnimatedSection from "@/components/AnimatedSection";
 import CountryFilter from "@/components/CountryFilter";
 import { studios } from "@/data/studios";
+import { cn } from "@/lib/utils";
 
 const Studios = () => {
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
@@ -23,9 +25,12 @@ const Studios = () => {
     [selectedCountry]
   );
 
-  // Get featured studio (first from filtered list)
-  const featuredStudio = filteredStudios[0];
-  const otherStudios = filteredStudios.slice(1);
+  // Determine grid layout based on number of studios
+  const getGridClasses = (count: number) => {
+    if (count === 1) return "max-w-md mx-auto";
+    if (count === 2) return "grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto";
+    return "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
+  };
 
   return (
     <Layout>
@@ -41,7 +46,7 @@ const Studios = () => {
             </h1>
             <p className="font-sans text-lg md:text-xl text-muted-foreground max-w-2xl mb-12">
               A curated collection of game development studios across the African continent. 
-              Each entry documents their journey, games, and impact on the industry.
+              Each entry documents their journey, games, and impact on gaming culture.
             </p>
           </AnimatedSection>
 
@@ -56,25 +61,19 @@ const Studios = () => {
         </div>
       </section>
 
-      {/* Featured Studio */}
-      {featuredStudio && (
+      {/* Adaptive Gallery Grid */}
+      {filteredStudios.length > 0 && (
         <section className="pb-24 md:pb-32">
-          <StudioCard studio={featuredStudio} index={0} variant="featured" />
-        </section>
-      )}
-
-      {/* Studio Grid */}
-      {otherStudios.length > 0 && (
-        <section className="py-12 md:py-20">
-          <div className="editorial-container space-y-32 md:space-y-48">
-            {otherStudios.map((studio, index) => (
-              <StudioCard
-                key={studio.id}
-                studio={studio}
-                index={index + 1}
-                variant="large"
-              />
-            ))}
+          <div className="editorial-container">
+            <div className={cn(getGridClasses(filteredStudios.length))}>
+              {filteredStudios.map((studio, index) => (
+                <StudioCard
+                  key={studio.id}
+                  studio={studio}
+                  index={index}
+                />
+              ))}
+            </div>
           </div>
         </section>
       )}
@@ -101,8 +100,8 @@ const Studios = () => {
               <p className="font-sans text-muted-foreground mb-8">
                 We're always looking to expand the archive with new studios from across Africa.
               </p>
-              <a
-                href="/about"
+              <Link
+                to="/about"
                 className="inline-flex items-center gap-4 font-mono text-sm uppercase tracking-[0.15em] group"
               >
                 <span className="relative">
@@ -112,7 +111,7 @@ const Studios = () => {
                 <span className="transition-transform duration-300 group-hover:translate-x-2">
                   →
                 </span>
-              </a>
+              </Link>
             </div>
           </AnimatedSection>
         </div>

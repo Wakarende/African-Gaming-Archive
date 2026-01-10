@@ -20,14 +20,14 @@ const Landing = () => {
           <AnimatedSection animation="fade-up">
             <div className="max-w-4xl mx-auto text-center">
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground mb-8">
-                What is AGDA?
+                What is AGA?
               </p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-normal leading-[1.15] tracking-[-0.02em] mb-8">
-                A living archive documenting game development studios across the African continent
+                A living archive documenting gaming culture across the African continent
               </h2>
               <p className="font-sans text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                From Nairobi to Lagos, Johannesburg to Cairo—we're building the definitive record 
-                of Africa's emerging interactive media industry.
+                From studios to creators, esports to gaming spaces—we're building the definitive record 
+                of Africa's gaming ecosystem.
               </p>
             </div>
           </AnimatedSection>

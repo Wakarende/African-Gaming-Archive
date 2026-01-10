@@ -49,7 +49,7 @@ const About = () => {
             <div className="lg:col-span-8">
               <AnimatedSection animation="fade-up" delay={100}>
                 <p className="editorial-body text-foreground/90 mb-8">
-                  The African Game Development Archive exists to document and celebrate 
+                  The African Gaming Archive exists to document and celebrate 
                   the full spectrum of gaming culture across the continent. From the studios 
                   creating games, to the content creators building communities, to the esports 
                   players competing internationally, to the cafes and spaces where gaming 
@@ -163,15 +163,15 @@ const About = () => {
                 Know a studio we should document?
               </h2>
               <p className="editorial-body text-foreground/90 mb-8">
-                We're always looking to expand the archive. If you know of a game 
-                development studio in Africa that should be included, or if 
-                you're a studio looking to be featured, please reach out.
+                We're always looking to expand the archive. If you know of a gaming 
+                studio, content creator, or esports organization in Africa that should 
+                be included, or if you're looking to be featured, please reach out.
               </p>
               <a
-                href="mailto:hello@agda.org"
+                href="mailto:hello@aga.org"
                 className="inline-flex items-center gap-4 font-mono text-sm uppercase tracking-[0.15em] group"
               >
-                <span className="link-underline text-accent">hello@agda.org</span>
+                <span className="link-underline text-accent">hello@aga.org</span>
                 <span className="text-accent transition-transform duration-300 group-hover:translate-x-2">
                   →
                 </span>

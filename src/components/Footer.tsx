@@ -15,12 +15,12 @@ const Footer = () => {
                 to="/"
                 className="font-serif text-2xl md:text-3xl hover:text-accent transition-colors"
               >
-                African Game
+                African Gaming
                 <br />
-                Development Archive
+                Archive
               </Link>
               <p className="editorial-body text-muted-foreground mt-6 max-w-md">
-                Documenting Africa's gaming ecosystem, one story at a time.
+                Documenting Africa's gaming culture, one story at a time.
               </p>
             </div>
 
@@ -51,10 +51,10 @@ const Footer = () => {
                 Contact
               </p>
               <a
-                href="mailto:hello@agda.org"
+                href="mailto:hello@aga.org"
                 className="font-mono text-sm link-underline"
               >
-                hello@agda.org
+                hello@aga.org
               </a>
             </div>
           </div>
@@ -62,7 +62,7 @@ const Footer = () => {
           {/* Bottom bar */}
           <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              © {currentYear} AGDA. All rights reserved.
+              © {currentYear} AGA. All rights reserved.
             </p>
             <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
               Built with intention
