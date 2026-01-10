@@ -25,13 +25,13 @@ const getStudioLayout = (index: number, total: number): {
 
   // 3 studios: large left, two stacked right
   if (total === 3) {
-    if (index === 0) return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[3/4]", variant: "featured" };
+    if (index === 0) return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[4/5]", variant: "featured" };
     return { colSpan: "col-span-12 md:col-span-5", aspectRatio: "aspect-[4/5]", variant: "standard" };
   }
 
   // 4 studios: hero section + one wide bottom
   if (total === 4) {
-    if (index === 0) return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[3/4]", variant: "featured" };
+    if (index === 0) return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[4/5]", variant: "featured" };
     if (index === 1 || index === 2) return { colSpan: "col-span-12 md:col-span-5", aspectRatio: "aspect-[4/5]", variant: "standard" };
     return { colSpan: "col-span-12", aspectRatio: "aspect-[21/9]", variant: "wide" };
   }
@@ -41,7 +41,7 @@ const getStudioLayout = (index: number, total: number): {
   
   // First item is always featured
   if (index === 0) {
-    return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[3/4]", variant: "featured" };
+    return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[4/5]", variant: "featured" };
   }
   
   // Second and third stack on the right of featured
