@@ -4,13 +4,13 @@ import Footer from "./Footer";
 
 interface LayoutProps {
   children: ReactNode;
-  hideHeader?: boolean;
+  isLandingPage?: boolean;
 }
 
-const Layout = ({ children, hideHeader = false }: LayoutProps) => {
+const Layout = ({ children, isLandingPage = false }: LayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col">
-      {!hideHeader && <Header />}
+      <Header isLandingPage={isLandingPage} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

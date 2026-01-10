@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import heroImage from "@/assets/hero-image.jpg";
-import studio1 from "@/assets/studio-1.jpg";
-import studio2 from "@/assets/studio-2.jpg";
 
 const HeroReveal = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isRevealed, setIsRevealed] = useState(false);
 
   useEffect(() => {
-    // Trigger reveal animation after a short delay
     const timer = setTimeout(() => {
       setIsRevealed(true);
     }, 300);
@@ -19,53 +14,88 @@ const HeroReveal = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col justify-between overflow-hidden bg-foreground">
-      {/* Background image grid - asymmetric gallery style */}
-      <div className="absolute inset-0">
-        {/* Main large image */}
-        <div
-          className={cn(
-            "absolute top-0 right-0 w-full md:w-[70%] h-[60%] md:h-full transition-all duration-[1.5s] ease-out",
-            isRevealed ? "opacity-40 translate-x-0" : "opacity-0 translate-x-20"
-          )}
+      {/* Subtle abstract geometric pattern */}
+      <div className="absolute inset-0 opacity-[0.08]">
+        <svg
+          className="w-full h-full"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice"
         >
-          <img
-            src={heroImage}
-            alt=""
-            onLoad={() => setIsLoaded(true)}
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        {/* Secondary images - staggered */}
-        <div
-          className={cn(
-            "absolute bottom-[10%] left-[5%] w-[35%] md:w-[20%] aspect-[4/5] border border-background/20 transition-all duration-[1.5s] delay-300 ease-out hidden md:block",
-            isRevealed ? "opacity-60 translate-y-0" : "opacity-0 translate-y-20"
-          )}
-        >
-          <img
-            src={studio1}
-            alt=""
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-          />
-        </div>
-
-        <div
-          className={cn(
-            "absolute top-[15%] left-[15%] w-[25%] md:w-[15%] aspect-square border border-background/20 transition-all duration-[1.5s] delay-500 ease-out hidden lg:block",
-            isRevealed ? "opacity-50 translate-y-0" : "opacity-0 translate-y-20"
-          )}
-        >
-          <img
-            src={studio2}
-            alt=""
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-          />
-        </div>
-
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground via-foreground/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground via-transparent to-foreground/50" />
+          <defs>
+            <pattern
+              id="geometric-pattern"
+              x="0"
+              y="0"
+              width="100"
+              height="100"
+              patternUnits="userSpaceOnUse"
+            >
+              {/* Triangular grid pattern */}
+              <path
+                d="M0 50 L50 0 L100 50 L50 100 Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                className="text-background"
+              />
+              <circle
+                cx="50"
+                cy="50"
+                r="2"
+                fill="currentColor"
+                className="text-background"
+              />
+              <circle
+                cx="0"
+                cy="0"
+                r="1.5"
+                fill="currentColor"
+                className="text-background"
+              />
+              <circle
+                cx="100"
+                cy="0"
+                r="1.5"
+                fill="currentColor"
+                className="text-background"
+              />
+              <circle
+                cx="0"
+                cy="100"
+                r="1.5"
+                fill="currentColor"
+                className="text-background"
+              />
+              <circle
+                cx="100"
+                cy="100"
+                r="1.5"
+                fill="currentColor"
+                className="text-background"
+              />
+              {/* Additional geometric lines */}
+              <line
+                x1="0"
+                y1="0"
+                x2="100"
+                y2="100"
+                stroke="currentColor"
+                strokeWidth="0.3"
+                className="text-background"
+              />
+              <line
+                x1="100"
+                y1="0"
+                x2="0"
+                y2="100"
+                stroke="currentColor"
+                strokeWidth="0.3"
+                className="text-background"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#geometric-pattern)" />
+        </svg>
       </div>
 
       {/* Giant typography */}

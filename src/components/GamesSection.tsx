@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Game } from "@/data/studios";
 import GameCard from "./GameCard";
 import AnimatedSection from "./AnimatedSection";
@@ -18,6 +18,7 @@ interface GamesSectionProps {
 const GAMES_PER_PAGE = 6;
 
 const GamesSection = ({ games }: GamesSectionProps) => {
+  const sectionRef = useRef<HTMLElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,6 +44,15 @@ const GamesSection = ({ games }: GamesSectionProps) => {
 
   const showPagination = filteredGames.length > GAMES_PER_PAGE;
 
+  // Scroll to section top when page changes
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Small delay to ensure state updates before scrolling
+    setTimeout(() => {
+      sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
   // Reset to page 1 when filters change
   const handleSearchChange = (value: string) => {
     setSearchQuery(value);
@@ -57,7 +67,7 @@ const GamesSection = ({ games }: GamesSectionProps) => {
   if (games.length === 0) return null;
 
   return (
-    <section className="py-20 md:py-32 border-b border-border">
+    <section ref={sectionRef} className="py-20 md:py-32 border-b border-border scroll-mt-24">
       <div className="editorial-container">
         <AnimatedSection animation="fade-up">
           <div className="mb-12">
@@ -112,7 +122,7 @@ const GamesSection = ({ games }: GamesSectionProps) => {
           <AnimatedSection animation="fade-up">
             <div className="flex justify-center items-center gap-4 mt-16">
               <button
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
                 className="font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
@@ -123,7 +133,7 @@ const GamesSection = ({ games }: GamesSectionProps) => {
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                   <button
                     key={page}
-                    onClick={() => setCurrentPage(page)}
+                    onClick={() => handlePageChange(page)}
                     className={`w-8 h-8 font-mono text-sm transition-colors ${
                       currentPage === page
                         ? "bg-foreground text-background"
@@ -136,7 +146,7 @@ const GamesSection = ({ games }: GamesSectionProps) => {
               </div>
 
               <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
                 className="font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
