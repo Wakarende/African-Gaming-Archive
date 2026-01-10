@@ -5,7 +5,66 @@ import StudioCard from "@/components/StudioCard";
 import AnimatedSection from "@/components/AnimatedSection";
 import CountryFilter from "@/components/CountryFilter";
 import { studios } from "@/data/studios";
-import { cn } from "@/lib/utils";
+
+// Get layout configuration for each studio based on position and total count
+const getStudioLayout = (index: number, total: number): { 
+  colSpan: string; 
+  aspectRatio: string; 
+  variant: "featured" | "standard" | "wide";
+} => {
+  // 1 studio: centered, portrait
+  if (total === 1) {
+    return { colSpan: "col-span-12 md:col-span-6 md:col-start-4", aspectRatio: "aspect-[3/4]", variant: "featured" };
+  }
+
+  // 2 studios: asymmetric split
+  if (total === 2) {
+    if (index === 0) return { colSpan: "col-span-12 md:col-span-7", aspectRatio: "aspect-[4/5]", variant: "featured" };
+    return { colSpan: "col-span-12 md:col-span-5", aspectRatio: "aspect-[4/5]", variant: "standard" };
+  }
+
+  // 3 studios: large left, two stacked right
+  if (total === 3) {
+    if (index === 0) return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[3/4]", variant: "featured" };
+    return { colSpan: "col-span-12 md:col-span-5", aspectRatio: "aspect-[4/5]", variant: "standard" };
+  }
+
+  // 4 studios: hero section + one wide bottom
+  if (total === 4) {
+    if (index === 0) return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[3/4]", variant: "featured" };
+    if (index === 1 || index === 2) return { colSpan: "col-span-12 md:col-span-5", aspectRatio: "aspect-[4/5]", variant: "standard" };
+    return { colSpan: "col-span-12", aspectRatio: "aspect-[21/9]", variant: "wide" };
+  }
+
+  // 5+ studios: repeating gallery pattern
+  const position = index % 7;
+  
+  // First item is always featured
+  if (index === 0) {
+    return { colSpan: "col-span-12 md:col-span-7 md:row-span-2", aspectRatio: "aspect-[3/4]", variant: "featured" };
+  }
+  
+  // Second and third stack on the right of featured
+  if (index === 1 || index === 2) {
+    return { colSpan: "col-span-12 md:col-span-5", aspectRatio: "aspect-[4/5]", variant: "standard" };
+  }
+
+  // Remaining items in varied patterns
+  switch (position) {
+    case 3:
+      return { colSpan: "col-span-12 md:col-span-4", aspectRatio: "aspect-[3/4]", variant: "standard" };
+    case 4:
+      return { colSpan: "col-span-12 md:col-span-4", aspectRatio: "aspect-[3/4]", variant: "standard" };
+    case 5:
+      return { colSpan: "col-span-12 md:col-span-4", aspectRatio: "aspect-[3/4]", variant: "standard" };
+    case 6:
+      return { colSpan: "col-span-12 md:col-span-5", aspectRatio: "aspect-[4/5]", variant: "standard" };
+    case 0:
+      return { colSpan: "col-span-12 md:col-span-7", aspectRatio: "aspect-[4/5]", variant: "featured" };
+    default:
+      return { colSpan: "col-span-12 md:col-span-4", aspectRatio: "aspect-[3/4]", variant: "standard" };
+  }
+};
 
 const Studios = () => {
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
@@ -24,13 +83,6 @@ const Studios = () => {
         : studios.filter((s) => s.country === selectedCountry),
     [selectedCountry]
   );
-
-  // Determine grid layout based on number of studios
-  const getGridClasses = (count: number) => {
-    if (count === 1) return "max-w-md mx-auto";
-    if (count === 2) return "grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto";
-    return "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12";
-  };
 
   return (
     <Layout>
@@ -61,18 +113,24 @@ const Studios = () => {
         </div>
       </section>
 
-      {/* Adaptive Gallery Grid */}
+      {/* Asymmetric Gallery Grid */}
       {filteredStudios.length > 0 && (
         <section className="pb-24 md:pb-32">
           <div className="editorial-container">
-            <div className={cn(getGridClasses(filteredStudios.length))}>
-              {filteredStudios.map((studio, index) => (
-                <StudioCard
-                  key={studio.id}
-                  studio={studio}
-                  index={index}
-                />
-              ))}
+            <div className="grid grid-cols-12 gap-6 md:gap-8">
+              {filteredStudios.map((studio, index) => {
+                const layout = getStudioLayout(index, filteredStudios.length);
+                return (
+                  <div key={studio.id} className={layout.colSpan}>
+                    <StudioCard
+                      studio={studio}
+                      index={index}
+                      aspectRatio={layout.aspectRatio}
+                      variant={layout.variant}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
