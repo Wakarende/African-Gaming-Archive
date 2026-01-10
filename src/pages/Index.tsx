@@ -3,7 +3,6 @@ import { ArrowDown } from "lucide-react";
 import Layout from "@/components/Layout";
 import StudioCard from "@/components/StudioCard";
 import AnimatedSection from "@/components/AnimatedSection";
-import Marquee from "@/components/Marquee";
 import { studios } from "@/data/studios";
 import heroImage from "@/assets/hero-image.jpg";
 import studio1 from "@/assets/studio-1.jpg";
@@ -62,21 +61,6 @@ const Index = () => {
             </span>
           </div>
         </div>
-      </section>
-
-      {/* Marquee Section - Inverted */}
-      <section className="section-inverted py-6 md:py-8 overflow-hidden">
-        <Marquee speed="slow">
-          {studios.map((studio) => (
-            <span
-              key={studio.id}
-              className="font-serif text-2xl md:text-3xl lg:text-4xl mx-3 md:mx-6"
-            >
-              {studio.name}
-              <span className="text-accent mx-3 md:mx-6">✦</span>
-            </span>
-          ))}
-        </Marquee>
       </section>
 
       {/* Featured Studio - Full width */}

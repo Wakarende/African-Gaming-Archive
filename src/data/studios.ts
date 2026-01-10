@@ -3,6 +3,24 @@ import studio2 from "@/assets/studio-2.jpg";
 import studio3 from "@/assets/studio-3.jpg";
 import studio4 from "@/assets/studio-4.jpg";
 
+export interface Game {
+  id: string;
+  title: string;
+  year: string;
+  platform: string;
+  status: "Released" | "In Development";
+  coverImage: string;
+  playUrl?: string;
+}
+
+export interface Interview {
+  id: string;
+  publication: string;
+  date: string;
+  headline: string;
+  url: string;
+}
+
 export interface Studio {
   id: string;
   name: string;
@@ -15,6 +33,8 @@ export interface Studio {
   description: string[];
   heroImage: string;
   galleryImages: string[];
+  games: Game[];
+  interviews: Interview[];
 }
 
 export const studios: Studio[] = [
@@ -33,7 +53,102 @@ export const studios: Studio[] = [
       "Currently, the studio is developing an ambitious multiplayer experience that aims to connect players across Africa in a shared virtual savanna, funded through a combination of grants and private investment."
     ],
     heroImage: studio1,
-    galleryImages: [studio1, studio2]
+    galleryImages: [studio1, studio2],
+    games: [
+      {
+        id: "savanna-keeper",
+        title: "Savanna Keeper",
+        year: "2020",
+        platform: "Mobile, PC",
+        status: "Released",
+        coverImage: studio1,
+        playUrl: "https://example.com/savanna-keeper"
+      },
+      {
+        id: "migration-trails",
+        title: "Migration Trails",
+        year: "2021",
+        platform: "Mobile",
+        status: "Released",
+        coverImage: studio2,
+        playUrl: "https://example.com/migration-trails"
+      },
+      {
+        id: "serengeti-nights",
+        title: "Serengeti Nights",
+        year: "2022",
+        platform: "PC",
+        status: "Released",
+        coverImage: studio3,
+        playUrl: "https://example.com/serengeti-nights"
+      },
+      {
+        id: "wild-hearts-multiplayer",
+        title: "Wild Hearts: Connected Savanna",
+        year: "2025",
+        platform: "PC, Console",
+        status: "In Development",
+        coverImage: studio4
+      },
+      {
+        id: "conservation-quest",
+        title: "Conservation Quest",
+        year: "2023",
+        platform: "Mobile",
+        status: "Released",
+        coverImage: studio1,
+        playUrl: "https://example.com/conservation-quest"
+      },
+      {
+        id: "predator-prey",
+        title: "Predator & Prey",
+        year: "2022",
+        platform: "PC",
+        status: "Released",
+        coverImage: studio2,
+        playUrl: "https://example.com/predator-prey"
+      },
+      {
+        id: "safari-simulator",
+        title: "Safari Simulator VR",
+        year: "2024",
+        platform: "VR",
+        status: "Released",
+        coverImage: studio3,
+        playUrl: "https://example.com/safari-vr"
+      },
+      {
+        id: "elephant-journey",
+        title: "Elephant Journey",
+        year: "2025",
+        platform: "Mobile",
+        status: "In Development",
+        coverImage: studio4
+      }
+    ],
+    interviews: [
+      {
+        id: "techcrunch-2023",
+        publication: "TechCrunch Africa",
+        date: "March 2023",
+        headline: "How Savanna Interactive is putting African wildlife in players' hands",
+        url: "https://example.com/techcrunch-interview"
+      },
+      {
+        id: "polygon-2022",
+        publication: "Polygon",
+        date: "November 2022",
+        headline: "The Kenyan studio making conservation games that actually matter",
+        url: "https://example.com/polygon-interview"
+      },
+      {
+        id: "gamesindustry-2021",
+        publication: "GamesIndustry.biz",
+        date: "June 2021",
+        headline: "Savanna Interactive raises $2M for multiplayer wildlife game",
+        url: "https://example.com/gamesindustry-interview"
+      }
+    ]
   },
   {
     id: "lamu-digital",
@@ -50,7 +165,51 @@ export const studios: Studio[] = [
       "The studio operates from a restored Swahili townhouse, its walls lined with artifacts that inspire their digital creations."
     ],
     heroImage: studio2,
-    galleryImages: [studio2, studio1]
+    galleryImages: [studio2, studio1],
+    games: [
+      {
+        id: "swahili-traders",
+        title: "Swahili Traders: Port of Lamu",
+        year: "2022",
+        platform: "Mobile",
+        status: "Released",
+        coverImage: studio2,
+        playUrl: "https://example.com/swahili-traders"
+      },
+      {
+        id: "coastal-mysteries",
+        title: "Coastal Mysteries",
+        year: "2023",
+        platform: "Mobile",
+        status: "Released",
+        coverImage: studio1,
+        playUrl: "https://example.com/coastal-mysteries"
+      },
+      {
+        id: "dhow-navigator",
+        title: "Dhow Navigator",
+        year: "2024",
+        platform: "Mobile, Web",
+        status: "In Development",
+        coverImage: studio3
+      }
+    ],
+    interviews: [
+      {
+        id: "bbc-africa-2023",
+        publication: "BBC Africa",
+        date: "August 2023",
+        headline: "The game studio preserving Swahili heritage one puzzle at a time",
+        url: "https://example.com/bbc-interview"
+      },
+      {
+        id: "nation-2022",
+        publication: "Daily Nation",
+        date: "December 2022",
+        headline: "Mombasa studio brings coastal history to life through gaming",
+        url: "https://example.com/nation-interview"
+      }
+    ]
   },
   {
     id: "kampala-rhythm",
@@ -67,7 +226,60 @@ export const studios: Studio[] = [
       "The studio's headquarters doubles as a recording space, allowing seamless integration between music production and game development."
     ],
     heroImage: studio3,
-    galleryImages: [studio3, studio4]
+    galleryImages: [studio3, studio4],
+    games: [
+      {
+        id: "beat-of-kampala",
+        title: "Beat of Kampala",
+        year: "2021",
+        platform: "Mobile",
+        status: "Released",
+        coverImage: studio3,
+        playUrl: "https://example.com/beat-of-kampala"
+      },
+      {
+        id: "afrobeats-master",
+        title: "Afrobeats Master",
+        year: "2022",
+        platform: "Mobile, Web",
+        status: "Released",
+        coverImage: studio4,
+        playUrl: "https://example.com/afrobeats-master"
+      },
+      {
+        id: "drum-circle",
+        title: "Drum Circle: Traditional Rhythms",
+        year: "2023",
+        platform: "Mobile",
+        status: "Released",
+        coverImage: studio1,
+        playUrl: "https://example.com/drum-circle"
+      },
+      {
+        id: "rhythm-fusion",
+        title: "Rhythm Fusion Online",
+        year: "2025",
+        platform: "Web, Mobile",
+        status: "In Development",
+        coverImage: studio2
+      }
+    ],
+    interviews: [
+      {
+        id: "vice-2023",
+        publication: "Vice Gaming",
+        date: "February 2023",
+        headline: "How Uganda's rhythm game scene is creating new stars",
+        url: "https://example.com/vice-interview"
+      },
+      {
+        id: "monitor-2022",
+        publication: "Daily Monitor",
+        date: "September 2022",
+        headline: "Kampala studio blends music production with game development",
+        url: "https://example.com/monitor-interview"
+      }
+    ]
   },
   {
     id: "dar-futures",
@@ -84,7 +296,58 @@ export const studios: Studio[] = [
       "Their current project, an open-world exploration of a transformed Dar es Salaam, has received critical acclaim and funding from international arts councils."
     ],
     heroImage: studio4,
-    galleryImages: [studio4, studio3]
+    galleryImages: [studio4, studio3],
+    games: [
+      {
+        id: "dar-2118",
+        title: "Dar 2118",
+        year: "2020",
+        platform: "PC",
+        status: "Released",
+        coverImage: studio4,
+        playUrl: "https://example.com/dar-2118"
+      },
+      {
+        id: "neon-uhuru",
+        title: "Neon Uhuru",
+        year: "2022",
+        platform: "PC, Console",
+        status: "Released",
+        coverImage: studio3,
+        playUrl: "https://example.com/neon-uhuru"
+      },
+      {
+        id: "future-city-dar",
+        title: "Future City: Dar es Salaam",
+        year: "2025",
+        platform: "PC, Console",
+        status: "In Development",
+        coverImage: studio1
+      }
+    ],
+    interviews: [
+      {
+        id: "kotaku-2022",
+        publication: "Kotaku",
+        date: "July 2022",
+        headline: "This Tanzanian studio is building Afrofuturism's gaming future",
+        url: "https://example.com/kotaku-interview"
+      },
+      {
+        id: "citizen-2021",
+        publication: "The Citizen",
+        date: "March 2021",
+        headline: "Dar Futures Collective wins international arts grant for new game",
+        url: "https://example.com/citizen-interview"
+      },
+      {
+        id: "ign-2023",
+        publication: "IGN",
+        date: "October 2023",
+        headline: "Neon Uhuru review: A stunning vision of African futures",
+        url: "https://example.com/ign-interview"
+      }
+    ]
   }
 ];
 
