@@ -64,41 +64,16 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stats / Numbers Section */}
-      <section className="py-16 md:py-24 border-b border-border">
-        <div className="editorial-container">
-          <AnimatedSection animation="fade-up">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-              {[
-                { number: "04", label: "Studios Documented" },
-                { number: "03", label: "Countries" },
-                { number: "2018", label: "Earliest Founded" },
-                { number: "∞", label: "Stories to Tell" },
-              ].map((stat, index) => (
-                <div key={index} className="text-center md:text-left">
-                  <p className="font-serif text-5xl md:text-6xl lg:text-7xl leading-none mb-2">
-                    {stat.number}
-                  </p>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* Marquee Section - Inverted */}
       <section className="section-inverted py-6 md:py-8 overflow-hidden">
         <Marquee speed="slow">
           {studios.map((studio) => (
             <span
               key={studio.id}
-              className="font-serif text-2xl md:text-3xl lg:text-4xl mx-8 md:mx-16"
+              className="font-serif text-2xl md:text-3xl lg:text-4xl mx-3 md:mx-6"
             >
               {studio.name}
-              <span className="text-accent mx-8">✦</span>
+              <span className="text-accent mx-3 md:mx-6">✦</span>
             </span>
           ))}
         </Marquee>

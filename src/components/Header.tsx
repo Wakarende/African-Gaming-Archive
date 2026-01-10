@@ -49,32 +49,68 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-12">
+          <nav className="hidden md:flex items-center gap-8 lg:gap-12">
             {[
-              { path: "/", label: "Archive" },
-              { path: "/about", label: "About" },
+              { path: "/", label: "Studios", active: true },
+              { path: "#", label: "Creators", coming: true },
+              { path: "#", label: "Esports", coming: true },
+              { path: "#", label: "Spaces", coming: true },
             ].map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={cn(
-                  "relative font-mono text-xs uppercase tracking-[0.15em] transition-colors py-2",
-                  isScrolled || !isHome
-                    ? "text-foreground/70 hover:text-foreground"
-                    : "text-background/70 hover:text-background",
-                  isActive(link.path) && "text-foreground"
+              <div key={link.label} className="relative">
+                {link.coming ? (
+                  <span
+                    className={cn(
+                      "font-mono text-xs uppercase tracking-[0.15em] cursor-not-allowed",
+                      isScrolled || !isHome
+                        ? "text-muted-foreground/50"
+                        : "text-background/40"
+                    )}
+                  >
+                    {link.label}
+                    <span className="ml-1 text-[9px] font-mono tracking-normal">(soon)</span>
+                  </span>
+                ) : (
+                  <Link
+                    to={link.path}
+                    className={cn(
+                      "relative font-mono text-xs uppercase tracking-[0.15em] transition-colors py-2",
+                      isScrolled || !isHome
+                        ? "text-foreground/70 hover:text-foreground"
+                        : "text-background/70 hover:text-background",
+                      isActive(link.path) && "text-foreground"
+                    )}
+                  >
+                    {link.label}
+                    <span
+                      className={cn(
+                        "absolute bottom-0 left-0 w-full h-px transition-transform duration-300 origin-left",
+                        isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                        isActive(link.path) ? "scale-x-100" : "scale-x-0"
+                      )}
+                    />
+                  </Link>
                 )}
-              >
-                {link.label}
-                <span
-                  className={cn(
-                    "absolute bottom-0 left-0 w-full h-px transition-transform duration-300 origin-left",
-                    isScrolled || !isHome ? "bg-foreground" : "bg-background",
-                    isActive(link.path) ? "scale-x-100" : "scale-x-0"
-                  )}
-                />
-              </Link>
+              </div>
             ))}
+            <Link
+              to="/about"
+              className={cn(
+                "relative font-mono text-xs uppercase tracking-[0.15em] transition-colors py-2",
+                isScrolled || !isHome
+                  ? "text-foreground/70 hover:text-foreground"
+                  : "text-background/70 hover:text-background",
+                isActive("/about") && "text-foreground"
+              )}
+            >
+              About
+              <span
+                className={cn(
+                  "absolute bottom-0 left-0 w-full h-px transition-transform duration-300 origin-left",
+                  isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                  isActive("/about") ? "scale-x-100" : "scale-x-0"
+                )}
+              />
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -113,28 +149,61 @@ const Header = () => {
             : "opacity-0 pointer-events-none"
         )}
       >
-        <nav className="flex flex-col items-center gap-8">
+        <nav className="flex flex-col items-center gap-6">
           {[
-            { path: "/", label: "Archive" },
-            { path: "/about", label: "About" },
+            { path: "/", label: "Studios", active: true },
+            { path: "#", label: "Creators", coming: true },
+            { path: "#", label: "Esports", coming: true },
+            { path: "#", label: "Spaces", coming: true },
           ].map((link, index) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={cn(
-                "font-serif text-5xl md:text-7xl transition-all duration-500",
-                isMobileMenuOpen
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8",
-                isActive(link.path)
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+            <div key={link.label}>
+              {link.coming ? (
+                <span
+                  className={cn(
+                    "font-serif text-4xl md:text-5xl text-muted-foreground/40 cursor-not-allowed transition-all duration-500",
+                    isMobileMenuOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8"
+                  )}
+                  style={{ transitionDelay: `${index * 100 + 200}ms` }}
+                >
+                  {link.label}
+                  <span className="ml-2 text-base font-mono tracking-normal">(soon)</span>
+                </span>
+              ) : (
+                <Link
+                  to={link.path}
+                  className={cn(
+                    "font-serif text-4xl md:text-5xl transition-all duration-500",
+                    isMobileMenuOpen
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8",
+                    isActive(link.path)
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  style={{ transitionDelay: `${index * 100 + 200}ms` }}
+                >
+                  {link.label}
+                </Link>
               )}
-              style={{ transitionDelay: `${index * 100 + 200}ms` }}
-            >
-              {link.label}
-            </Link>
+            </div>
           ))}
+          <Link
+            to="/about"
+            className={cn(
+              "font-serif text-4xl md:text-5xl transition-all duration-500 mt-4 pt-4 border-t border-border",
+              isMobileMenuOpen
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8",
+              isActive("/about")
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+            style={{ transitionDelay: "600ms" }}
+          >
+            About
+          </Link>
         </nav>
       </div>
     </>
