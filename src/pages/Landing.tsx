@@ -10,7 +10,7 @@ import studio3 from "@/assets/studio-3.jpg";
 
 const Landing = () => {
   return (
-    <Layout hideHeader>
+    <Layout isLandingPage>
       {/* Hero - Full viewport immersive entrance */}
       <HeroReveal />
 

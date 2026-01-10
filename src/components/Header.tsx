@@ -2,9 +2,14 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-const Header = () => {
+interface HeaderProps {
+  isLandingPage?: boolean;
+}
+
+const Header = ({ isLandingPage = false }: HeaderProps) => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isPastHero, setIsPastHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
@@ -13,6 +18,8 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
+      // Show header after scrolling past viewport height (hero section)
+      setIsPastHero(window.scrollY > window.innerHeight * 0.8);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -23,12 +30,18 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  // On landing page, hide header until user scrolls past hero
+  const shouldHideHeader = isLandingPage && !isPastHero && !isMobileMenuOpen;
+
   return (
     <>
       <header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-          isScrolled || !isHome
+          shouldHideHeader
+            ? "opacity-0 pointer-events-none -translate-y-4"
+            : "opacity-100 pointer-events-auto translate-y-0",
+          isScrolled || !isHome || isPastHero
             ? "bg-background/95 backdrop-blur-sm border-b border-border"
             : "bg-transparent",
           isScrolled ? "py-4" : "py-6 md:py-8"
@@ -40,7 +53,7 @@ const Header = () => {
             to="/"
             className={cn(
               "font-mono text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-300",
-              isScrolled || !isHome
+              isScrolled || !isHome || isPastHero
                 ? "text-foreground"
                 : "text-background"
             )}
@@ -61,7 +74,7 @@ const Header = () => {
                   <span
                     className={cn(
                       "font-mono text-xs uppercase tracking-[0.15em] cursor-not-allowed",
-                      isScrolled || !isHome
+                      isScrolled || !isHome || isPastHero
                         ? "text-muted-foreground/50"
                         : "text-background/40"
                     )}
@@ -74,7 +87,7 @@ const Header = () => {
                     to={link.path}
                     className={cn(
                       "relative font-mono text-xs uppercase tracking-[0.15em] transition-colors py-2",
-                      isScrolled || !isHome
+                      isScrolled || !isHome || isPastHero
                         ? "text-foreground/70 hover:text-foreground"
                         : "text-background/70 hover:text-background",
                       isActive(link.path) && "text-foreground"
@@ -84,7 +97,7 @@ const Header = () => {
                     <span
                       className={cn(
                         "absolute bottom-0 left-0 w-full h-px transition-transform duration-300 origin-left",
-                        isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                        isScrolled || !isHome || isPastHero ? "bg-foreground" : "bg-background",
                         isActive(link.path) ? "scale-x-100" : "scale-x-0"
                       )}
                     />
@@ -96,7 +109,7 @@ const Header = () => {
               to="/about"
               className={cn(
                 "relative font-mono text-xs uppercase tracking-[0.15em] transition-colors py-2",
-                isScrolled || !isHome
+                isScrolled || !isHome || isPastHero
                   ? "text-foreground/70 hover:text-foreground"
                   : "text-background/70 hover:text-background",
                 isActive("/about") && "text-foreground"
@@ -106,7 +119,7 @@ const Header = () => {
               <span
                 className={cn(
                   "absolute bottom-0 left-0 w-full h-px transition-transform duration-300 origin-left",
-                  isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                  isScrolled || !isHome || isPastHero ? "bg-foreground" : "bg-background",
                   isActive("/about") ? "scale-x-100" : "scale-x-0"
                 )}
               />
@@ -118,21 +131,21 @@ const Header = () => {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={cn(
               "md:hidden relative w-8 h-8 flex flex-col justify-center items-center gap-1.5",
-              isScrolled || !isHome ? "text-foreground" : "text-background"
+              isScrolled || !isHome || isPastHero ? "text-foreground" : "text-background"
             )}
             aria-label="Toggle menu"
           >
             <span
               className={cn(
                 "w-6 h-px transition-all duration-300",
-                isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                isScrolled || !isHome || isPastHero ? "bg-foreground" : "bg-background",
                 isMobileMenuOpen && "rotate-45 translate-y-1"
               )}
             />
             <span
               className={cn(
                 "w-6 h-px transition-all duration-300",
-                isScrolled || !isHome ? "bg-foreground" : "bg-background",
+                isScrolled || !isHome || isPastHero ? "bg-foreground" : "bg-background",
                 isMobileMenuOpen && "-rotate-45 -translate-y-0.5"
               )}
             />

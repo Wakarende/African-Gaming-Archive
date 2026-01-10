@@ -46,37 +46,50 @@ const StudioDetail = () => {
         </div>
       </section>
 
-      {/* Meta Info Bar */}
-      <section className="py-8 md:py-12 border-b border-border">
+      {/* Modern Meta Info Section - Editorial Card Layout */}
+      <section className="py-16 md:py-24 border-b border-border">
         <div className="editorial-container">
           <AnimatedSection animation="fade-up">
-            <div className="flex flex-wrap items-center gap-8">
-              {/* Studio Logo */}
-              {studio.logo && (
-                <div className="w-16 h-16 border border-border rounded-sm flex items-center justify-center p-2 bg-background">
-                  <img
-                    src={studio.logo}
-                    alt={`${studio.name} logo`}
-                    className="w-full h-full object-contain"
-                  />
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+              {/* Left - Logo and Label */}
+              <div className="lg:col-span-3">
+                <div className="lg:sticky lg:top-32">
+                  {studio.logo && (
+                    <div className="w-20 h-20 md:w-24 md:h-24 border border-border flex items-center justify-center p-3 bg-background mb-6">
+                      <img
+                        src={studio.logo}
+                        alt={`${studio.name} logo`}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  )}
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                    Studio Profile
+                  </p>
                 </div>
-              )}
+              </div>
               
-              {/* Meta items */}
-              <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-8">
-                {[
-                  { label: "Founded", value: studio.founded },
-                  { label: "Platform", value: studio.platform },
-                  { label: "Status", value: studio.status },
-                  { label: "Location", value: studio.country },
-                ].map((item) => (
-                  <div key={item.label}>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-2">
-                      {item.label}
-                    </p>
-                    <p className="font-serif text-lg md:text-xl">{item.value}</p>
-                  </div>
-                ))}
+              {/* Right - Meta Grid */}
+              <div className="lg:col-span-9">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+                  {[
+                    { label: "Founded", value: studio.founded },
+                    { label: "Platform", value: studio.platform },
+                    { label: "Status", value: studio.status },
+                    { label: "Location", value: studio.country },
+                  ].map((item, index) => (
+                    <div key={item.label} className="relative">
+                      {/* Connecting line on desktop */}
+                      {index < 3 && (
+                        <div className="hidden md:block absolute top-1/2 -right-6 w-12 h-px bg-border" />
+                      )}
+                      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-3">
+                        {item.label}
+                      </p>
+                      <p className="font-serif text-xl md:text-2xl leading-tight">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </AnimatedSection>
