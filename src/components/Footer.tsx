@@ -20,8 +20,7 @@ const Footer = () => {
                 Development Archive
               </Link>
               <p className="editorial-body text-muted-foreground mt-6 max-w-md">
-                Documenting the studios building Africa's interactive future, 
-                one story at a time.
+                Documenting East Africa's gaming ecosystem, one story at a time.
               </p>
             </div>
 

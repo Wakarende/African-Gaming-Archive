@@ -2,6 +2,8 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import AnimatedSection from "@/components/AnimatedSection";
+import GamesSection from "@/components/GamesSection";
+import InterviewsSection from "@/components/InterviewsSection";
 import { getStudioById, getAdjacentStudios } from "@/data/studios";
 
 const StudioDetail = () => {
@@ -129,6 +131,12 @@ const StudioDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Games Section */}
+      <GamesSection games={studio.games} />
+
+      {/* Interviews Section */}
+      <InterviewsSection interviews={studio.interviews} />
 
       {/* Navigation - Large visual */}
       <section className="border-t border-border">
