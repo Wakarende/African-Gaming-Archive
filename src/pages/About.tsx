@@ -42,7 +42,7 @@ const About = () => {
                   Mission
                 </p>
                 <p className="font-serif text-2xl md:text-3xl leading-snug">
-                  We believe game development is a form of cultural expression.
+                  Gaming culture is a form of cultural expression.
                 </p>
               </AnimatedSection>
             </div>
@@ -50,15 +50,15 @@ const About = () => {
               <AnimatedSection animation="fade-up" delay={100}>
                 <p className="editorial-body text-foreground/90 mb-8">
                   The East African Game Development Archive exists to document and celebrate 
-                  the growing community of game creators across the region. We believe that 
-                  game development is a form of cultural expression, and that the stories 
-                  of these studios—their struggles, innovations, and triumphs—deserve to be told.
+                  the full spectrum of gaming culture across the region. From the studios 
+                  creating games, to the content creators building communities, to the esports 
+                  players competing internationally, to the cafes and spaces where gaming 
+                  happens—we believe all of it deserves to be witnessed and preserved.
                 </p>
                 <p className="editorial-body text-foreground/90">
-                  Yet much of this work goes undocumented. Studios come and go, games are 
-                  released and forgotten, and the institutional memory of the industry 
-                  remains fragmented. This archive aims to change that—to create a 
-                  permanent record of who is building, what they're creating, and why it matters.
+                  This is a living archive. Right now, we're documenting game development 
+                  studios. Future phases will expand to include content creators, esports 
+                  communities, and gaming spaces.
                 </p>
               </AnimatedSection>
             </div>
