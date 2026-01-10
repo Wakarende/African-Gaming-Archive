@@ -31,10 +31,10 @@ const Footer = () => {
               </p>
               <nav className="flex flex-col gap-4">
                 <Link
-                  to="/"
+                  to="/studios"
                   className="font-mono text-sm uppercase tracking-[0.1em] link-underline w-fit"
                 >
-                  Archive
+                  Studios
                 </Link>
                 <Link
                   to="/about"
