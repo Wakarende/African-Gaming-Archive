@@ -58,7 +58,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
                 : "text-background"
             )}
           >
-            <img src="/src/assets/AGA.png" alt="AGA-logo" className="w-24 h-auto"></img>
+            <img src="/src/assets/aga.png" alt="AGA-logo" className="w-24 h-auto"></img>
          
           </Link>
 
