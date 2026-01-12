@@ -1,16 +1,70 @@
 import { useParams, Link, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import AnimatedSection from "@/components/AnimatedSection";
 import GamesSection from "@/components/GamesSection";
 import InterviewsSection from "@/components/InterviewsSection";
 import VisualArchive from "@/components/VisualArchive";
-import { getStudioById, getAdjacentStudios } from "@/data/studios";
+import { getStudioBySlug, getGamesByStudio, getInterviewsByStudio, getAllStudios } from "@/lib/queries";
+import { urlFor } from "@/lib/sanity";
+import type { Studio, Game, Interview } from "@/types/sanity";
 
 const StudioDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const studio = id ? getStudioById(id) : undefined;
-  const { prev, next } = id ? getAdjacentStudios(id) : { prev: null, next: null };
+  const { slug } = useParams<{ slug: string }>();
+  const [studio, setStudio] = useState<Studio | null>(null);
+  const [games, setGames] = useState<Game[]>([]);
+  const [interviews, setInterviews] = useState<Interview[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [prev, setPrev] = useState<Studio | null>(null);
+  const [next, setNext] = useState<Studio | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!slug) return;
+
+      try {
+        const studioData = await getStudioBySlug(slug);
+        setStudio(studioData);
+
+        if (studioData) {
+          const [gamesData, interviewsData, allStudios] = await Promise.all([
+            getGamesByStudio(studioData._id),
+            getInterviewsByStudio(studioData._id),
+            getAllStudios(),
+          ]);
+          setGames(gamesData);
+          setInterviews(interviewsData);
+          const currentIndex = allStudios.findIndex(s => s._id === studioData._id);
+        const prevStudio = currentIndex > 0 ? allStudios[currentIndex - 1] : null;
+        const nextStudio = currentIndex < allStudios.length - 1 ? allStudios[currentIndex + 1] : null;
+
+        setPrev(prevStudio);
+        setNext(nextStudio);
+        
+        }
+      } catch (error) {
+        console.error('Error fetching studio:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="font-mono text-sm uppercase tracking-[0.3em] text-muted-foreground">
+            Loading studio...
+          </p>
+        </div>
+      </Layout>
+    );
+  }
+
 
   if (!studio) {
     return <Navigate to="/" replace />;
@@ -27,7 +81,7 @@ const StudioDetail = () => {
               <AnimatedSection animation="fade-up">
                 <div className="mb-8 lg:mb-12">
                   <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-6">
-                    {studio.location}, {studio.country}
+                    {studio.location.city}, {studio.location.country}
                   </p>
                   
                   {/* Studio Name - Large stacked display */}
@@ -38,7 +92,7 @@ const StudioDetail = () => {
                   </h1>
                   
                   <p className="font-serif text-lg md:text-xl text-muted-foreground italic max-w-md">
-                    {studio.tagline}
+                    {studio.shortDescription}
                   </p>
                 </div>
               </AnimatedSection>
@@ -49,9 +103,9 @@ const StudioDetail = () => {
                   <div className="grid grid-cols-2 gap-6 border-t border-border pt-6">
                     {[
                       { label: "Founded", value: studio.founded },
-                      { label: "Platform", value: studio.platform },
+                      { label: "Platform", value: studio.platform.join(', ') },
                       { label: "Status", value: studio.status },
-                      { label: "Location", value: studio.country },
+                      { label: "Location", value: studio.location.country },
                     ].map((item) => (
                       <div key={item.label} className="py-2">
                         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1">
@@ -71,7 +125,7 @@ const StudioDetail = () => {
                 <div className="relative group">
                   <div className="aspect-[4/5] md:aspect-[3/4] lg:aspect-[4/5] overflow-hidden border border-border">
                     <img
-                      src={studio.heroImage}
+                      src={studio.heroImage ? urlFor(studio.heroImage) : '/placeholder.jpg'}
                       alt={studio.name}
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                     />
@@ -79,14 +133,14 @@ const StudioDetail = () => {
                   
                   {/* Logo overlay */}
                   {studio.logo && (
-                    <div className="absolute bottom-4 right-4 w-16 h-16 md:w-20 md:h-20 bg-background border border-border p-3 opacity-90">
-                      <img
-                        src={studio.logo}
-                        alt={`${studio.name} logo`}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  )}
+                  <div className="absolute bottom-4 right-4 w-16 h-16 md:w-20 md:h-20 bg-background border border-border p-3 opacity-90">
+                    <img
+                      src={urlFor(studio.logo)}
+                      alt={`${studio.name} logo`}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
                 </div>
               </AnimatedSection>
             </div>
@@ -97,9 +151,9 @@ const StudioDetail = () => {
                 <div className="grid grid-cols-2 gap-6 border-t border-border pt-6">
                   {[
                     { label: "Founded", value: studio.founded },
-                    { label: "Platform", value: studio.platform },
+                    { label: "Platform", value: studio.platform.join(', ') },
                     { label: "Status", value: studio.status },
-                    { label: "Location", value: studio.country },
+                    { label: "Location", value: studio.location.country },
                   ].map((item) => (
                     <div key={item.label} className="py-2">
                       <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1">
@@ -127,7 +181,7 @@ const StudioDetail = () => {
                     The Story
                   </p>
                   <blockquote className="font-serif text-2xl md:text-3xl lg:text-4xl leading-tight italic text-muted-foreground">
-                    "{studio.description[0].split('.')[0]}."
+                    "{studio.shortDescription}."
                   </blockquote>
                 </div>
               </AnimatedSection>
@@ -135,24 +189,29 @@ const StudioDetail = () => {
 
             {/* Right column - full narrative */}
             <div className="lg:col-span-8 space-y-8">
-              {studio.description.map((paragraph, index) => (
-                <AnimatedSection key={index} animation="fade-up" delay={index * 100}>
-                  <p className="editorial-body text-foreground/90">{paragraph}</p>
-                </AnimatedSection>
-              ))}
-            </div>
+              {studio.narrative && studio.narrative.length > 0 ? (
+                studio.narrative.map((block: any, index: number) => (
+                  <AnimatedSection key={index} animation="fade-up" delay={index * 100}>
+                    <p className="editorial-body text-foreground/90">
+                      {block.children?.map((child: any) => child.text).join(' ')}
+                    </p>
+                  </AnimatedSection>
+                ))
+              ) : (
+                <p className="editorial-body text-muted-foreground">No narrative available.</p>
+              )}
+          </div>
           </div>
         </div>
       </section>
 
       {/* Visual Archive - Asymmetric masonry gallery */}
-      <VisualArchive images={studio.galleryImages} studioName={studio.name} />
+      <VisualArchive images={studio.supportingImages || []} studioName={studio.name} />
 
       {/* Games Section */}
-      <GamesSection games={studio.games} />
+      <GamesSection games={games} />
 
-      {/* Interviews Section */}
-      <InterviewsSection interviews={studio.interviews} />
+      <InterviewsSection interviews={interviews} />
 
       {/* Navigation - Large visual */}
       <section className="border-t border-border">
@@ -160,12 +219,12 @@ const StudioDetail = () => {
           {/* Previous */}
           {prev ? (
             <Link
-              to={`/studio/${prev.id}`}
+              to={`/studio/${prev.slug.current}`}
               className="group relative overflow-hidden"
             >
               <div className="aspect-[16/9] md:aspect-auto md:h-80">
                 <img
-                  src={prev.heroImage}
+                  src={prev.heroImage ? urlFor(prev.heroImage) : '/placeholder.jpg'}
                   alt={prev.name}
                   className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500"
                 />
@@ -191,12 +250,12 @@ const StudioDetail = () => {
           {/* Next */}
           {next ? (
             <Link
-              to={`/studio/${next.id}`}
+              to={`/studio/${next.slug.current}`}
               className="group relative overflow-hidden border-t md:border-t-0 md:border-l border-border"
             >
               <div className="aspect-[16/9] md:aspect-auto md:h-80">
                 <img
-                  src={next.heroImage}
+                  src={next.heroImage ? urlFor(next.heroImage) : '/placeholder.jpg'}
                   alt={next.name}
                   className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500"
                 />

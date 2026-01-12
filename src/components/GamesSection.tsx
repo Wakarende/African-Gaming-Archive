@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef } from "react";
-import { Game } from "@/data/studios";
+import type { Game } from "@/types/sanity";
 import GameCard from "./GameCard";
 import AnimatedSection from "./AnimatedSection";
 import { Input } from "@/components/ui/input";
@@ -30,8 +30,8 @@ const GamesSection = ({ games }: GamesSectionProps) => {
         .includes(searchQuery.toLowerCase());
       const matchesStatus =
         statusFilter === "all" ||
-        (statusFilter === "released" && game.status === "Released") ||
-        (statusFilter === "development" && game.status === "In Development");
+        (statusFilter === "released" && game.status === "released") ||
+        (statusFilter === "development" && game.status === "in-development");
       return matchesSearch && matchesStatus;
     });
   }, [games, searchQuery, statusFilter]);
@@ -102,7 +102,7 @@ const GamesSection = ({ games }: GamesSectionProps) => {
         {/* Games Grid - 2 columns on desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-16">
           {paginatedGames.map((game, index) => (
-            <AnimatedSection key={game.id} animation="fade-up" delay={index * 100}>
+            <AnimatedSection key={game._id} animation="fade-up" delay={index * 100}>
               <GameCard game={game} />
             </AnimatedSection>
           ))}

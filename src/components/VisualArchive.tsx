@@ -2,9 +2,10 @@ import { useState } from "react";
 import AnimatedSection from "./AnimatedSection";
 import ImageLightbox from "./ImageLightbox";
 import { cn } from "@/lib/utils";
+import {urlFor} from "@/lib/sanity";
 
 interface VisualArchiveProps {
-  images: string[];
+  images: any[];
   studioName: string;
 }
 
@@ -100,8 +101,12 @@ const getRowLayouts = (count: number): RowConfig[] => {
 const VisualArchive = ({ images, studioName }: VisualArchiveProps) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const imageUrls = images.map(img => 
+    typeof img === 'string' ? img : urlFor(img)
+  );
 
-  const rowLayouts = getRowLayouts(images.length);
+  const rowLayouts = getRowLayouts(imageUrls.length);
 
   const openLightbox = (index: number) => {
     setCurrentImageIndex(index);
@@ -114,10 +119,10 @@ const VisualArchive = ({ images, studioName }: VisualArchiveProps) => {
     const rowImages = row.widths.map((width, i) => {
       const currentIndex = imageIndex;
       imageIndex++;
-      if (currentIndex >= images.length) return null;
+      if (currentIndex >= imageUrls.length) return null;
       
       return {
-        src: images[currentIndex],
+        src: imageUrls[currentIndex],
         width,
         index: currentIndex,
       };
@@ -183,7 +188,7 @@ const VisualArchive = ({ images, studioName }: VisualArchiveProps) => {
       </section>
 
       <ImageLightbox
-        images={images}
+        images={imageUrls}
         currentIndex={currentImageIndex}
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}

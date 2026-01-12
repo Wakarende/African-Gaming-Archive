@@ -58,7 +58,8 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
                 : "text-background"
             )}
           >
-            AGA
+            <img src="/src/assets/AGA.png" alt="AGA-logo" className="w-24 h-auto"></img>
+         
           </Link>
 
           {/* Desktop Navigation */}

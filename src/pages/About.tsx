@@ -53,7 +53,7 @@ const About = () => {
                   the full spectrum of gaming culture across the continent. From the studios 
                   creating games, to the content creators building communities, to the esports 
                   players competing internationally, to the cafes and spaces where gaming 
-                  happens—we believe all of it deserves to be witnessed and preserved.
+                  happens. We believe all of it deserves to be witnessed and preserved.
                 </p>
                 <p className="editorial-body text-foreground/90">
                   This is a living archive. Right now, we're documenting game development 
@@ -168,10 +168,10 @@ const About = () => {
                 be included, or if you're looking to be featured, please reach out.
               </p>
               <a
-                href="mailto:hello@aga.org"
-                className="inline-flex items-center gap-4 font-mono text-sm uppercase tracking-[0.15em] group"
+                href="mailto:AfricanGamingArchive@proton.me"
+                className="inline-flex items-center gap-4 font-mono text-sm tracking-[0.15em] group"
               >
-                <span className="link-underline text-accent">hello@aga.org</span>
+                <span className="link-underline text-accent">AfricanGamingArchive@proton.me</span>
                 <span className="text-accent transition-transform duration-300 group-hover:translate-x-2">
                   →
                 </span>

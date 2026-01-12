@@ -1,10 +1,12 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import StudioCard from "@/components/StudioCard";
 import AnimatedSection from "@/components/AnimatedSection";
 import CountryFilter from "@/components/CountryFilter";
-import { studios } from "@/data/studios";
+import { getAllStudios } from "@/lib/queries";
+import type { Studio } from "@/types/sanity";
+// import { studios } from "@/data/studios";
 
 // Get layout configuration for each studio based on position and total count
 const getStudioLayout = (index: number, total: number): { 
@@ -67,22 +69,60 @@ const getStudioLayout = (index: number, total: number): {
 };
 
 const Studios = () => {
-  const [selectedCountry, setSelectedCountry] = useState<string>("all");
+  const [studios,setStudios] = useState<Studio[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCountry, setSelectedCountry] =useState<string>("all");
 
+
+  //Fetch studios from Sanity on component mount
+  useEffect(() =>  {
+    async function fetchStudios(){
+      try{const data = await getAllStudios();
+        setStudios(data);
+      }catch(error){
+        console.error("Error fetching studios:", error);
+      }finally{
+        setLoading(false);
+      }
+    }
+    fetchStudios();
+  }, []);
   // Extract unique countries from studios data, sorted alphabetically
+ // Extract unique countries from studios data, sorted alphabetically
   const countries = useMemo(
-    () => [...new Set(studios.map((s) => s.country))].sort(),
-    []
+    () => [...new Set(studios.map((s) => s.location.country))].sort(),  // Changed: s.country → s.location.country
+    [studios]  // Changed: [] → [studios] to recalculate when studios change
   );
 
   // Filter studios based on selection
-  const filteredStudios = useMemo(
-    () =>
-      selectedCountry === "all"
-        ? studios
-        : studios.filter((s) => s.country === selectedCountry),
-    [selectedCountry]
-  );
+  // const filteredStudios = useMemo(
+  //   () =>
+  //     selectedCountry === "all"
+  //       ? studios
+  //       : studios.filter((s) => s.country === selectedCountry),
+  //   [selectedCountry]
+  // );
+  // Filter studios based on selection
+const filteredStudios = useMemo(
+  () =>
+    selectedCountry === "all"
+      ? studios
+      : studios.filter((s) => s.location.country === selectedCountry),
+  [selectedCountry, studios]
+);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="font-mono text-sm uppercase tracking-[0.3em] text-muted-foreground">
+            Loading studios...
+          </p>
+        </div>
+      </Layout>
+    );
+  }
+
 
   return (
     <Layout>
@@ -121,7 +161,7 @@ const Studios = () => {
               {filteredStudios.map((studio, index) => {
                 const layout = getStudioLayout(index, filteredStudios.length);
                 return (
-                  <div key={studio.id} className={layout.colSpan}>
+                  <div key={studio._id} className={layout.colSpan}>
                     <StudioCard
                       studio={studio}
                       index={index}

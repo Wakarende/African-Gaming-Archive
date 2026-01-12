@@ -81,6 +81,15 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'logo',
+      title: 'Studio Logo',
+      type: 'image',
+      description: 'Studio logo (optional - shows on hover)',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
       name: 'shortDescription',
       title: 'Short Description',
       type: 'text',

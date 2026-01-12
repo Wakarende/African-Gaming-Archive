@@ -47,14 +47,14 @@ const Footer = () => {
 
             {/* Contact */}
             <div className="md:col-span-3">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-6">
+              <p className="font-mono text-[10px]tracking-[0.2em] text-muted-foreground mb-6">
                 Contact
               </p>
               <a
-                href="mailto:hello@aga.org"
+                href="mailto:AfricanGamingArchive@proton.me"
                 className="font-mono text-sm link-underline"
               >
-                hello@aga.org
+                AfricanGamingArchive@proton.me
               </a>
             </div>
           </div>
@@ -64,9 +64,9 @@ const Footer = () => {
             <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
               © {currentYear} AGA. All rights reserved.
             </p>
-            <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+            {/* <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
               Built with intention
-            </p>
+            </p> */}
           </div>
         </AnimatedSection>
       </div>

@@ -1,6 +1,6 @@
-import { Game } from "@/data/studios";
+import type { Game } from "@/types/sanity";
+import { urlFor } from "@/lib/sanity";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-
 interface GameCardProps {
   game: Game;
 }
@@ -12,20 +12,20 @@ const GameCard = ({ game }: GameCardProps) => {
       <div className="relative overflow-hidden">
         <AspectRatio ratio={16 / 9}>
           <img
-            src={game.coverImage}
-            alt={game.title}
-            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
-          />
+          src={game.screenshot ? urlFor(game.screenshot) : '/placeholder.jpg'}
+          alt={game.title}
+          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+        />
         </AspectRatio>
         
         {/* Status badge overlay */}
         <div className="absolute top-4 right-4">
           <span className={`font-mono text-[10px] uppercase tracking-[0.15em] px-3 py-1.5 ${
-            game.status === "Released" 
+            game.status === "released" 
               ? "bg-foreground text-background" 
               : "bg-background/90 text-foreground border border-border"
           }`}>
-            {game.status}
+            {game.status === "released" ? "Released" : "In Development"}
           </span>
         </div>
       </div>
@@ -34,8 +34,8 @@ const GameCard = ({ game }: GameCardProps) => {
       <div className="p-6 md:p-8">
         {/* Meta info */}
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-3">
-          {game.year} · {game.platform}
-        </p>
+        {game.releaseYear} · {game.platform?.join(', ') || 'Multiple Platforms'}
+      </p>
         
         {/* Title */}
         <h3 className="font-serif text-2xl md:text-3xl text-foreground mb-4 leading-tight">
@@ -43,9 +43,9 @@ const GameCard = ({ game }: GameCardProps) => {
         </h3>
         
         {/* Play link */}
-        {game.playUrl && game.status === "Released" && (
+        {game.gameUrl && game.status === "released" && (
           <a
-            href={game.playUrl}
+            href={game.gameUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.15em] text-foreground group/link"
