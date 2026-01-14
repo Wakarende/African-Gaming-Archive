@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import agaLogo from "@/assets/aga.png";
 
 interface HeaderProps {
   isLandingPage?: boolean;
@@ -58,7 +59,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
                 : "text-background"
             )}
           >
-            <img src="/src/assets/aga.png" alt="AGA-logo" className="w-24 h-auto"></img>
+            <img src={agaLogo} alt="AGA-logo" className="w-24 h-auto"></img>
          
           </Link>
 
