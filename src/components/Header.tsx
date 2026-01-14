@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import agaLogo from "@/assets/aga.png";
+import agaLogo from "@/assets/AGA.png";
 
 interface HeaderProps {
   isLandingPage?: boolean;
